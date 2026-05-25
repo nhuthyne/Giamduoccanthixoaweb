@@ -1,417 +1,396 @@
-```react
-import React, { useState, useEffect } from 'react';
-import { 
-  CalendarDays, 
-  ShoppingCart, 
-  Sun, 
-  SunMedium, 
-  Moon, 
-  CheckCircle2, 
-  Droplets, 
-  Target, 
-  Home,
-  Briefcase,
-  GraduationCap,
-  Heart,
-  ChevronRight,
-  ChevronLeft,
-  Plus,
-  Minus,
-  Flame,
-  Check
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kế Hoạch Giảm Cân Bảo Hy</title>
+    <!-- Tailwind CSS cho giao diện -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons cho các icon kẹo ngọt, dễ thương -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        /* Tùy chỉnh thanh cuộn ẩn đi cho đẹp */
+        ::-webkit-scrollbar { display: none; }
+        body { -ms-overflow-style: none; scrollbar-width: none; -webkit-tap-highlight-color: transparent; }
+        
+        /* Hiệu ứng chuyển động mượt mà */
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hiệu ứng nhịp đập cho tim */
+        .animate-pulse-fast { animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    </style>
+</head>
+<body class="bg-rose-50/40 font-sans text-gray-800 pb-24 min-h-screen selection:bg-rose-200">
 
-// Dữ liệu thực đơn chuẩn xác để tính toán
-const menuData = [
-  { 
-    dayId: 0, name: 'Chủ nhật', 
-    meals: [
-      { id: 'breakfast', time: 'Sáng (7h-9h)', food: '250g Khoai lang luộc/hấp', cal: 215 },
-      { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Bắp cải luộc', cal: 420 },
-      { id: 'dinner', time: 'Tối (18h-20h)', food: '200g Khoai lang + 1-2 Dưa leo + Canh rau', cal: 275 }
-    ],
-    dailyShop: ['Khoai lang: 450g', 'Đậu hũ: 150g', 'Bắp cải: 300g', 'Dưa leo: 2 trái', 'Rau nấu canh: 1 mớ'] 
-  },
-  { 
-    dayId: 1, name: 'Thứ 2', 
-    meals: [
-      { id: 'breakfast', time: 'Sáng (7h-9h)', food: '250g Khoai lang luộc/hấp', cal: 215 },
-      { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Rau cải luộc', cal: 420 },
-      { id: 'dinner', time: 'Tối (18h-20h)', food: '200g Khoai lang + 1-2 Dưa leo + Canh rau', cal: 275 }
-    ],
-    dailyShop: ['Khoai lang: 450g', 'Đậu hũ: 150g', 'Rau cải: 300g', 'Dưa leo: 2 trái', 'Rau nấu canh: 1 mớ'] 
-  },
-  { 
-    dayId: 2, name: 'Thứ 3', 
-    meals: [
-      { id: 'breakfast', time: 'Sáng (7h-9h)', food: '1 Chuối nhỏ + 150g Khoai lang', cal: 220 },
-      { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Bắp cải luộc', cal: 420 },
-      { id: 'dinner', time: 'Tối (18h-20h)', food: '150g Đậu hũ + Rau luộc + Canh rau', cal: 275 }
-    ],
-    dailyShop: ['Khoai lang: 150g', 'Chuối: 1 nải', 'Đậu hũ: 300g', 'Bắp cải: 300g', 'Rau luộc: 1 mớ'] 
-  },
-  { 
-    dayId: 3, name: 'Thứ 4', 
-    meals: [
-      { id: 'breakfast', time: 'Sáng (7h-9h)', food: '250g Khoai lang luộc/hấp', cal: 215 },
-      { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Rau muống luộc', cal: 420 },
-      { id: 'dinner', time: 'Tối (18h-20h)', food: '200g Khoai lang + 1-2 Dưa leo + Canh rau', cal: 275 }
-    ],
-    dailyShop: ['Khoai lang: 450g', 'Đậu hũ: 150g', 'Rau muống: 300g', 'Dưa leo: 2 trái', 'Rau nấu canh: 1 mớ'] 
-  },
-  { 
-    dayId: 4, name: 'Thứ 5', 
-    meals: [
-      { id: 'breakfast', time: 'Sáng (7h-9h)', food: '1 Chuối nhỏ + 150g Khoai lang', cal: 220 },
-      { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Bắp cải xào', cal: 420 },
-      { id: 'dinner', time: 'Tối (18h-20h)', food: '150g Đậu hũ + Rau luộc + Canh rau', cal: 275 }
-    ],
-    dailyShop: ['Khoai lang: 150g', 'Đậu hũ: 300g', 'Bắp cải: 300g', 'Rau luộc: 1 mớ'] 
-  },
-  { 
-    dayId: 5, name: 'Thứ 6', 
-    meals: [
-      { id: 'breakfast', time: 'Sáng (7h-9h)', food: '250g Khoai lang luộc/hấp', cal: 215 },
-      { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Rau cải xanh', cal: 420 },
-      { id: 'dinner', time: 'Tối (18h-20h)', food: '200g Khoai lang + 1-2 Dưa leo + Canh rau', cal: 275 }
-    ],
-    dailyShop: ['Khoai lang: 450g', 'Đậu hũ: 150g', 'Rau cải xanh: 300g', 'Dưa leo: 2 trái', 'Rau nấu canh: 1 mớ'] 
-  },
-  { 
-    dayId: 6, name: 'Thứ 7', 
-    meals: [
-      { id: 'breakfast', time: 'Sáng (7h-9h)', food: '1 Chuối nhỏ + 150g Khoai lang', cal: 220 },
-      { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Rau muống xào', cal: 420 },
-      { id: 'dinner', time: 'Tối (18h-20h)', food: '150g Đậu hũ + Rau luộc + Canh rau', cal: 275 }
-    ],
-    dailyShop: ['Khoai lang: 150g', 'Đậu hũ: 300g', 'Rau muống: 300g', 'Rau luộc: 1 mớ'] 
-  }
-];
-
-const weeklyShop = [
-  'Khoai lang: Khoảng 2.5 kg',
-  'Đậu hũ trắng: 10 - 12 miếng',
-  'Bắp cải, cải xanh, rau muống: Mỗi loại 1-2 kg',
-  'Dưa leo: 10 trái',
-  'Chuối: 1 nải',
-  'Gạo tẻ: Cần có sẵn ở nhà'
-];
-
-export default function BaoHyDietApp() {
-  const [activeTab, setActiveTab] = useState('home');
-  const [selectedDay, setSelectedDay] = useState(0);
-  
-  // States thông minh: Phân tách dữ liệu theo ngày
-  const [waterLog, setWaterLog] = useState({}); // { dayId: số_ly_nước }
-  const [eatenMeals, setEatenMeals] = useState({}); // { "dayId_mealId": true/false }
-  const [shopChecked, setShopChecked] = useState({}); 
-  const [shopMode, setShopMode] = useState('daily'); 
-  const [weight, setWeight] = useState(61.0);
-  
-  const [realToday, setRealToday] = useState(0);
-  const [currentMealType, setCurrentMealType] = useState('none');
-
-  // Khởi tạo và đồng bộ thời gian thực
-  useEffect(() => {
-    const now = new Date();
-    const todayId = now.getDay();
-    setRealToday(todayId);
-    setSelectedDay(todayId);
-
-    const hour = now.getHours();
-    if (hour >= 6 && hour < 10) setCurrentMealType('breakfast');
-    else if (hour >= 10 && hour < 14) setCurrentMealType('lunch');
-    else if (hour >= 17 && hour < 21) setCurrentMealType('dinner');
-    else setCurrentMealType('none');
-  }, []);
-
-  const todayMenu = menuData.find(d => d.dayId === selectedDay);
-
-  // Logic tương tác
-  const toggleMeal = (mealId) => {
-    const key = `${selectedDay}_${mealId}`;
-    setEatenMeals(prev => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  const handleWater = (action) => {
-    const currentWater = waterLog[selectedDay] || 0;
-    if (action === 'add' && currentWater < 8) {
-      setWaterLog(prev => ({ ...prev, [selectedDay]: currentWater + 1 }));
-    } else if (action === 'sub' && currentWater > 0) {
-      setWaterLog(prev => ({ ...prev, [selectedDay]: currentWater - 1 }));
-    }
-  };
-
-  const toggleShop = (item) => {
-    setShopChecked(prev => ({ ...prev, [item]: !prev[item] }));
-  };
-
-  const changeWeight = (val) => {
-    setWeight(prev => {
-      const newWeight = prev + val;
-      return newWeight > 65 ? 65 : newWeight < 52 ? 52 : Number(newWeight.toFixed(1));
-    });
-  };
-
-  // Tính toán thông minh
-  const consumedCalories = todayMenu.meals.reduce((total, meal) => {
-    return total + (eatenMeals[`${selectedDay}_${meal.id}`] ? meal.cal : 0);
-  }, 0);
-  
-  const waterCount = waterLog[selectedDay] || 0;
-  const isViewingToday = selectedDay === realToday;
-
-  return (
-    <div className="min-h-screen bg-rose-50/30 font-sans text-gray-800 pb-24 selection:bg-rose-200">
-      
-      {/* Header Dễ thương */}
-      <div className="bg-white px-6 pt-10 pb-5 rounded-b-[40px] shadow-sm border-b border-rose-100 mb-6">
-        <h1 className="text-2xl font-extrabold text-rose-500 flex items-center gap-2">
-          Chào Bảo Hy <Heart className="w-6 h-6 text-rose-400 fill-rose-400 animate-pulse" />
+    <!-- Header -->
+    <div class="bg-white px-6 pt-10 pb-5 rounded-b-[40px] shadow-sm border-b border-rose-100 mb-6">
+        <h1 class="text-2xl font-extrabold text-rose-500 flex items-center gap-2">
+            Chào Bảo Hy <i class="ph-fill ph-heart text-rose-400 animate-pulse-fast text-2xl"></i>
         </h1>
-        <p className="text-sm text-gray-500 mt-1">Chúc em một ngày tràn đầy năng lượng nhé!</p>
-      </div>
-
-      <main className="px-5 space-y-6">
-
-        {/* ================= TAB HOME ================= */}
-        {activeTab === 'home' && (
-          <div className="animate-in fade-in duration-500 space-y-6">
-            
-            {/* Lời nhắc phân loại */}
-            <div className="space-y-3">
-              <div className="bg-white p-4 rounded-3xl shadow-sm border border-orange-100 flex gap-3 items-center">
-                <div className="bg-orange-100 p-2.5 rounded-full text-orange-500"><Briefcase className="w-5 h-5" /></div>
-                <div>
-                  <h3 className="text-xs font-bold text-orange-500 uppercase tracking-wider">Công việc</h3>
-                  <p className="text-sm text-gray-700 mt-0.5">Sắp xếp công việc gọn gàng để tối có thời gian thư giãn nha em.</p>
-                </div>
-              </div>
-              <div className="bg-white p-4 rounded-3xl shadow-sm border border-blue-100 flex gap-3 items-center">
-                <div className="bg-blue-100 p-2.5 rounded-full text-blue-500"><GraduationCap className="w-5 h-5" /></div>
-                <div>
-                  <h3 className="text-xs font-bold text-blue-500 uppercase tracking-wider">Học tập</h3>
-                  <p className="text-sm text-gray-700 mt-0.5">Nhớ nghỉ ngơi 10 phút sau mỗi giờ học bài để mắt đỡ mỏi nhé.</p>
-                </div>
-              </div>
-              <div className="bg-white p-4 rounded-3xl shadow-sm border border-pink-100 flex gap-3 items-center">
-                <div className="bg-pink-100 p-2.5 rounded-full text-pink-500"><Heart className="w-5 h-5" /></div>
-                <div>
-                  <h3 className="text-xs font-bold text-pink-500 uppercase tracking-wider">Cá nhân</h3>
-                  <p className="text-sm text-gray-700 mt-0.5">Ăn đủ bữa, ngủ đủ giấc là cách yêu bản thân tốt nhất đó!</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Tracker Cân nặng (Tương tác động) */}
-            <div className="bg-white rounded-[32px] p-6 shadow-sm border border-teal-100 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-bl-full -z-10"></div>
-               <h3 className="font-bold text-teal-700 mb-4 flex items-center gap-2">
-                  <Target className="w-5 h-5 text-teal-500" /> Tiến độ giảm cân
-                </h3>
-                
-                <div className="flex items-center justify-between mb-6 bg-teal-50/50 p-4 rounded-2xl border border-teal-50">
-                  <div className="text-center">
-                    <p className="text-xs text-teal-600 font-medium mb-2">Hiện tại</p>
-                    <div className="flex items-center gap-3 bg-white px-3 py-1.5 rounded-xl shadow-sm">
-                      <button onClick={() => changeWeight(-0.1)} className="text-teal-400 hover:text-teal-600"><Minus className="w-4 h-4"/></button>
-                      <span className="text-xl font-bold text-gray-800 w-12">{weight}</span>
-                      <button onClick={() => changeWeight(0.1)} className="text-teal-400 hover:text-teal-600"><Plus className="w-4 h-4"/></button>
-                    </div>
-                  </div>
-                  <div className="text-teal-200 font-light text-2xl">&rarr;</div>
-                  <div className="text-center px-4">
-                    <p className="text-xs text-teal-600 font-medium mb-2">Mục tiêu</p>
-                    <p className="text-2xl font-bold text-teal-600">52.0<span className="text-sm font-normal">kg</span></p>
-                  </div>
-                </div>
-
-                {/* Thanh tiến độ động */}
-                <div className="relative pt-2 pb-1">
-                  <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-teal-400 rounded-full transition-all duration-500"
-                      style={{ width: `${Math.max(0, Math.min(100, ((61 - weight) / (61 - 52)) * 100))}%` }}
-                    ></div>
-                  </div>
-                  <div className="flex justify-between text-[10px] font-medium text-gray-400 mt-2">
-                    <span>Khởi điểm: 61kg</span>
-                    <span className="text-teal-600 font-bold">Đích: 52kg</span>
-                  </div>
-                </div>
-            </div>
-          </div>
-        )}
-
-        {/* ================= TAB THỰC ĐƠN ================= */}
-        {activeTab === 'menu' && (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500 space-y-5">
-            
-            {/* Thanh chọn ngày */}
-            <div className="flex justify-between items-center bg-white p-2 rounded-full shadow-sm border border-rose-100">
-              <button onClick={() => setSelectedDay(p => p === 0 ? 6 : p - 1)} className="p-3 text-rose-400 hover:bg-rose-50 rounded-full transition-colors"><ChevronLeft className="w-5 h-5"/></button>
-              <h2 className="font-bold text-lg text-gray-800">
-                {todayMenu.name} {isViewingToday && <span className="text-[10px] bg-rose-100 text-rose-600 px-2 py-0.5 rounded-full ml-1 align-middle">Hôm nay</span>}
-              </h2>
-              <button onClick={() => setSelectedDay(p => p === 6 ? 0 : p + 1)} className="p-3 text-rose-400 hover:bg-rose-50 rounded-full transition-colors"><ChevronRight className="w-5 h-5"/></button>
-            </div>
-
-            {/* Thống kê Calo & Nước trong ngày */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white p-4 rounded-[24px] shadow-sm border border-orange-100 flex flex-col justify-center">
-                <div className="flex items-center gap-1.5 text-orange-500 text-xs font-bold mb-2">
-                  <Flame className="w-4 h-4"/> Nạp vào
-                </div>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-2xl font-extrabold text-gray-800">{consumedCalories}</span>
-                  <span className="text-xs text-gray-400">/ 1200 kcal</span>
-                </div>
-                <div className="w-full h-1.5 bg-gray-100 rounded-full mt-2">
-                  <div className="h-full bg-orange-400 rounded-full transition-all" style={{ width: `${Math.min(100, (consumedCalories/1200)*100)}%` }}></div>
-                </div>
-              </div>
-
-              <div className="bg-white p-4 rounded-[24px] shadow-sm border border-cyan-100 flex flex-col justify-center">
-                <div className="flex items-center justify-between text-cyan-500 text-xs font-bold mb-2">
-                  <div className="flex items-center gap-1.5"><Droplets className="w-4 h-4"/> Nước</div>
-                  <span>{waterCount}/8 ly</span>
-                </div>
-                <div className="flex items-center justify-between mt-1">
-                  <button onClick={() => handleWater('sub')} className="w-8 h-8 flex items-center justify-center rounded-full bg-cyan-50 text-cyan-500 active:bg-cyan-100"><Minus className="w-4 h-4"/></button>
-                  <span className="text-xl font-extrabold text-gray-800">{waterCount * 250}<span className="text-[10px] text-gray-400 font-normal">ml</span></span>
-                  <button onClick={() => handleWater('add')} className="w-8 h-8 flex items-center justify-center rounded-full bg-cyan-50 text-cyan-500 active:bg-cyan-100"><Plus className="w-4 h-4"/></button>
-                </div>
-              </div>
-            </div>
-
-            {/* Danh sách bữa ăn */}
-            <div className="space-y-4">
-              {[
-                { id: 'breakfast', icon: Sun, color: 'yellow', theme: 'bg-yellow-50 border-yellow-200 text-yellow-700', activeTheme: 'ring-2 ring-yellow-400 ring-offset-2', title: 'Sáng' },
-                { id: 'lunch', icon: SunMedium, color: 'orange', theme: 'bg-orange-50 border-orange-200 text-orange-700', activeTheme: 'ring-2 ring-orange-400 ring-offset-2', title: 'Trưa' },
-                { id: 'dinner', icon: Moon, color: 'indigo', theme: 'bg-indigo-50 border-indigo-200 text-indigo-700', activeTheme: 'ring-2 ring-indigo-400 ring-offset-2', title: 'Tối' }
-              ].map((mealConfig, idx) => {
-                const mealData = todayMenu.meals[idx];
-                const isEaten = eatenMeals[`${selectedDay}_${mealConfig.id}`];
-                const isCurrentTime = isViewingToday && currentMealType === mealConfig.id;
-
-                return (
-                  <div 
-                    key={mealConfig.id}
-                    className={`rounded-[28px] p-5 transition-all border ${
-                      isEaten ? 'bg-gray-50/50 border-gray-100 opacity-70' : mealConfig.theme
-                    } ${isCurrentTime && !isEaten ? mealConfig.activeTheme : ''}`}
-                  >
-                    <div className="flex justify-between items-center mb-3">
-                      <div className={`flex items-center gap-2 font-bold ${isEaten ? 'text-gray-500' : ''}`}>
-                        <mealConfig.icon className="w-5 h-5" /> {mealData.time}
-                        {isCurrentTime && !isEaten && <span className="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded-full animate-bounce">Tới giờ ăn</span>}
-                      </div>
-                      <span className="text-xs font-bold bg-white/60 px-2.5 py-1 rounded-xl text-gray-600">{mealData.cal} kcal</span>
-                    </div>
-                    
-                    <p className={`text-sm font-medium mb-4 leading-relaxed ${isEaten ? 'text-gray-400 line-through' : 'text-gray-800'}`}>
-                      {mealData.food}
-                    </p>
-
-                    <button 
-                      onClick={() => toggleMeal(mealConfig.id)}
-                      className={`w-full py-3 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 transition-colors ${
-                        isEaten 
-                          ? 'bg-gray-200 text-gray-500' 
-                          : 'bg-white text-gray-800 shadow-sm hover:shadow-md'
-                      }`}
-                    >
-                      {isEaten ? <><Check className="w-4 h-4"/> Đã hoàn thành</> : 'Đánh dấu đã ăn'}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* ================= TAB ĐI CHỢ ================= */}
-        {activeTab === 'shop' && (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500 space-y-5">
-            
-            <div className="bg-gray-100/80 p-1.5 rounded-full flex relative">
-              <button 
-                onClick={() => setShopMode('daily')}
-                className={`flex-1 py-3 text-sm font-bold rounded-full transition-all z-10 ${shopMode === 'daily' ? 'text-rose-600' : 'text-gray-500'}`}
-              >
-                Mua theo ngày
-              </button>
-              <button 
-                onClick={() => setShopMode('weekly')}
-                className={`flex-1 py-3 text-sm font-bold rounded-full transition-all z-10 ${shopMode === 'weekly' ? 'text-rose-600' : 'text-gray-500'}`}
-              >
-                Mua cả tuần
-              </button>
-              <div className={`absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-white rounded-full shadow-sm transition-transform duration-300 ${shopMode === 'weekly' ? 'translate-x-[calc(100%+6px)]' : 'translate-x-0'}`}></div>
-            </div>
-
-            <div className="bg-white rounded-[32px] p-6 shadow-sm border border-rose-50">
-              <h2 className="font-bold text-gray-800 mb-5 flex items-center gap-2">
-                <ShoppingCart className="w-5 h-5 text-rose-400" />
-                {shopMode === 'daily' ? `Danh sách cho ${todayMenu.name}` : 'Mua cho cả tuần'}
-              </h2>
-              
-              <div className="space-y-3">
-                {(shopMode === 'daily' ? todayMenu.dailyShop : weeklyShop).map((item, index) => {
-                  const key = `${shopMode}_${item}`;
-                  const isChecked = shopChecked[key];
-                  return (
-                    <label 
-                      key={index} 
-                      className={`flex items-center gap-3 p-3.5 rounded-2xl transition-all cursor-pointer border border-transparent ${
-                        isChecked ? 'bg-gray-50' : 'bg-rose-50/30 hover:border-rose-100'
-                      }`}
-                    >
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${isChecked ? 'bg-rose-400' : 'bg-white border-2 border-rose-200'}`}>
-                        {isChecked && <Check className="w-4 h-4 text-white" />}
-                      </div>
-                      <input 
-                        type="checkbox" 
-                        checked={isChecked || false}
-                        onChange={() => toggleShop(key)}
-                        className="hidden"
-                      />
-                      <span className={`text-sm ${isChecked ? 'line-through text-gray-400' : 'text-gray-700 font-medium'}`}>
-                        {item}
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
-
-      </main>
-      
-      {/* Thanh điều hướng Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-rose-50 px-8 py-4 flex justify-between items-center z-50 rounded-t-[32px] shadow-[0_-10px_40px_rgba(0,0,0,0.03)] pb-safe">
-        {[
-          { id: 'home', icon: Home, label: 'Tổng quan' },
-          { id: 'menu', icon: CalendarDays, label: 'Thực đơn' },
-          { id: 'shop', icon: ShoppingCart, label: 'Đi chợ' }
-        ].map(tab => {
-          const isActive = activeTab === tab.id;
-          return (
-            <button 
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${isActive ? 'text-rose-500 scale-110' : 'text-gray-400 hover:text-rose-300'}`}
-            >
-              <tab.icon className={`w-6 h-6 ${isActive ? 'fill-rose-100' : ''}`} />
-              <span className={`text-[10px] ${isActive ? 'font-bold' : 'font-medium'}`}>{tab.label}</span>
-            </button>
-          );
-        })}
-      </div>
+        <p class="text-sm text-gray-500 mt-1">Chúc em một ngày tràn đầy năng lượng nhé!</p>
     </div>
-  );
-}
 
-```
+    <!-- Nội dung chính thay đổi theo Tab -->
+    <main id="app-content" class="px-5 space-y-6 fade-in"></main>
+
+    <!-- Thanh Điều Hướng (Bottom Bar) -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-rose-50 px-8 py-4 flex justify-between items-center z-50 rounded-t-[32px] shadow-[0_-10px_40px_rgba(0,0,0,0.04)]">
+        <button onclick="app.changeTab('home')" id="tab-home" class="flex flex-col items-center gap-1.5 transition-all duration-300 text-rose-500 scale-110">
+            <i class="ph-fill ph-house text-2xl"></i>
+            <span class="text-[10px] font-bold">Tổng quan</span>
+        </button>
+        <button onclick="app.changeTab('menu')" id="tab-menu" class="flex flex-col items-center gap-1.5 transition-all duration-300 text-gray-400 hover:text-rose-300">
+            <i class="ph-fill ph-calendar-blank text-2xl"></i>
+            <span class="text-[10px] font-medium">Thực đơn</span>
+        </button>
+        <button onclick="app.changeTab('shop')" id="tab-shop" class="flex flex-col items-center gap-1.5 transition-all duration-300 text-gray-400 hover:text-rose-300">
+            <i class="ph-fill ph-shopping-cart text-2xl"></i>
+            <span class="text-[10px] font-medium">Đi chợ</span>
+        </button>
+    </div>
+
+    <!-- Logic Ứng dụng bằng Vanilla JS -->
+    <script>
+        const menuData = [
+            { dayId: 0, name: 'Chủ nhật', meals: [ { id: 'breakfast', time: 'Sáng (7h-9h)', food: '250g Khoai lang luộc/hấp', cal: 215 }, { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Bắp cải luộc', cal: 420 }, { id: 'dinner', time: 'Tối (18h-20h)', food: '200g Khoai lang + 1-2 Dưa leo + Canh rau', cal: 275 } ], dailyShop: ['Khoai lang: 450g', 'Đậu hũ: 150g', 'Bắp cải: 300g', 'Dưa leo: 2 trái', 'Rau nấu canh: 1 mớ'] },
+            { dayId: 1, name: 'Thứ 2', meals: [ { id: 'breakfast', time: 'Sáng (7h-9h)', food: '250g Khoai lang luộc/hấp', cal: 215 }, { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Rau cải luộc', cal: 420 }, { id: 'dinner', time: 'Tối (18h-20h)', food: '200g Khoai lang + 1-2 Dưa leo + Canh rau', cal: 275 } ], dailyShop: ['Khoai lang: 450g', 'Đậu hũ: 150g', 'Rau cải: 300g', 'Dưa leo: 2 trái', 'Rau nấu canh: 1 mớ'] },
+            { dayId: 2, name: 'Thứ 3', meals: [ { id: 'breakfast', time: 'Sáng (7h-9h)', food: '1 Chuối nhỏ + 150g Khoai lang', cal: 220 }, { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Bắp cải luộc', cal: 420 }, { id: 'dinner', time: 'Tối (18h-20h)', food: '150g Đậu hũ + Rau luộc + Canh rau', cal: 275 } ], dailyShop: ['Khoai lang: 150g', 'Chuối: 1 nải', 'Đậu hũ: 300g', 'Bắp cải: 300g', 'Rau luộc: 1 mớ'] },
+            { dayId: 3, name: 'Thứ 4', meals: [ { id: 'breakfast', time: 'Sáng (7h-9h)', food: '250g Khoai lang luộc/hấp', cal: 215 }, { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Rau muống luộc', cal: 420 }, { id: 'dinner', time: 'Tối (18h-20h)', food: '200g Khoai lang + 1-2 Dưa leo + Canh rau', cal: 275 } ], dailyShop: ['Khoai lang: 450g', 'Đậu hũ: 150g', 'Rau muống: 300g', 'Dưa leo: 2 trái', 'Rau nấu canh: 1 mớ'] },
+            { dayId: 4, name: 'Thứ 5', meals: [ { id: 'breakfast', time: 'Sáng (7h-9h)', food: '1 Chuối nhỏ + 150g Khoai lang', cal: 220 }, { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Bắp cải xào', cal: 420 }, { id: 'dinner', time: 'Tối (18h-20h)', food: '150g Đậu hũ + Rau luộc + Canh rau', cal: 275 } ], dailyShop: ['Khoai lang: 150g', 'Đậu hũ: 300g', 'Bắp cải: 300g', 'Rau luộc: 1 mớ'] },
+            { dayId: 5, name: 'Thứ 6', meals: [ { id: 'breakfast', time: 'Sáng (7h-9h)', food: '250g Khoai lang luộc/hấp', cal: 215 }, { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Rau cải xanh', cal: 420 }, { id: 'dinner', time: 'Tối (18h-20h)', food: '200g Khoai lang + 1-2 Dưa leo + Canh rau', cal: 275 } ], dailyShop: ['Khoai lang: 450g', 'Đậu hũ: 150g', 'Rau cải xanh: 300g', 'Dưa leo: 2 trái', 'Rau nấu canh: 1 mớ'] },
+            { dayId: 6, name: 'Thứ 7', meals: [ { id: 'breakfast', time: 'Sáng (7h-9h)', food: '1 Chuối nhỏ + 150g Khoai lang', cal: 220 }, { id: 'lunch', time: 'Trưa (11h-13h)', food: '120g Cơm + 150g Đậu hũ + 300g Rau muống xào', cal: 420 }, { id: 'dinner', time: 'Tối (18h-20h)', food: '150g Đậu hũ + Rau luộc + Canh rau', cal: 275 } ], dailyShop: ['Khoai lang: 150g', 'Đậu hũ: 300g', 'Rau muống: 300g', 'Rau luộc: 1 mớ'] }
+        ];
+
+        const weeklyShop = [
+            'Khoai lang: Khoảng 2.5 kg',
+            'Đậu hũ trắng: 10 - 12 miếng',
+            'Bắp cải, cải xanh, rau muống: Mỗi loại 1-2 kg',
+            'Dưa leo: 10 trái',
+            'Chuối: 1 nải',
+            'Gạo tẻ: Cần có sẵn ở nhà'
+        ];
+
+        const app = {
+            state: {
+                activeTab: 'home',
+                selectedDay: new Date().getDay(),
+                realToday: new Date().getDay(),
+                currentMealType: 'none',
+                waterLog: {},
+                eatenMeals: {},
+                shopChecked: {},
+                shopMode: 'daily',
+                weight: 61.0
+            },
+
+            init() {
+                const hour = new Date().getHours();
+                if (hour >= 6 && hour < 10) this.state.currentMealType = 'breakfast';
+                else if (hour >= 10 && hour < 14) this.state.currentMealType = 'lunch';
+                else if (hour >= 17 && hour < 21) this.state.currentMealType = 'dinner';
+                
+                this.render();
+            },
+
+            changeTab(tab) {
+                this.state.activeTab = tab;
+                // Cập nhật giao diện bottom bar
+                const tabs = ['home', 'menu', 'shop'];
+                tabs.forEach(t => {
+                    const el = document.getElementById(`tab-${t}`);
+                    const span = el.querySelector('span');
+                    if(t === tab) {
+                        el.className = "flex flex-col items-center gap-1.5 transition-all duration-300 text-rose-500 scale-110";
+                        span.className = "text-[10px] font-bold";
+                    } else {
+                        el.className = "flex flex-col items-center gap-1.5 transition-all duration-300 text-gray-400 hover:text-rose-300";
+                        span.className = "text-[10px] font-medium";
+                    }
+                });
+                this.render();
+            },
+
+            changeDay(dir) {
+                if(dir === 'prev') {
+                    this.state.selectedDay = this.state.selectedDay === 0 ? 6 : this.state.selectedDay - 1;
+                } else {
+                    this.state.selectedDay = this.state.selectedDay === 6 ? 0 : this.state.selectedDay + 1;
+                }
+                this.render();
+            },
+
+            changeWeight(val) {
+                let newWeight = this.state.weight + val;
+                if (newWeight > 65) newWeight = 65;
+                if (newWeight < 52) newWeight = 52;
+                this.state.weight = Number(newWeight.toFixed(1));
+                this.render();
+            },
+
+            handleWater(action) {
+                let current = this.state.waterLog[this.state.selectedDay] || 0;
+                if (action === 'add' && current < 8) current++;
+                if (action === 'sub' && current > 0) current--;
+                this.state.waterLog[this.state.selectedDay] = current;
+                this.render();
+            },
+
+            toggleMeal(mealId) {
+                const key = `${this.state.selectedDay}_${mealId}`;
+                this.state.eatenMeals[key] = !this.state.eatenMeals[key];
+                this.render();
+            },
+
+            toggleShop(item) {
+                const key = `${this.state.shopMode}_${item}`;
+                this.state.shopChecked[key] = !this.state.shopChecked[key];
+                this.render();
+            },
+
+            setShopMode(mode) {
+                this.state.shopMode = mode;
+                this.render();
+            },
+
+            render() {
+                const contentEl = document.getElementById('app-content');
+                
+                // Khởi động lại animation bằng cách clone element (trick HTML/JS)
+                contentEl.classList.remove('fade-in');
+                void contentEl.offsetWidth; 
+                contentEl.classList.add('fade-in');
+
+                if (this.state.activeTab === 'home') {
+                    contentEl.innerHTML = this.renderHome();
+                } else if (this.state.activeTab === 'menu') {
+                    contentEl.innerHTML = this.renderMenu();
+                } else if (this.state.activeTab === 'shop') {
+                    contentEl.innerHTML = this.renderShop();
+                }
+            },
+
+            renderHome() {
+                const progressWidth = Math.max(0, Math.min(100, ((61 - this.state.weight) / (61 - 52)) * 100));
+                return `
+                    <!-- Lời nhắc phân loại -->
+                    <div class="space-y-3">
+                        <div class="bg-white p-4 rounded-3xl shadow-sm border border-orange-100 flex gap-3 items-center">
+                            <div class="bg-orange-100 p-2.5 rounded-full text-orange-500"><i class="ph-fill ph-briefcase text-xl"></i></div>
+                            <div>
+                                <h3 class="text-[11px] font-bold text-orange-500 uppercase tracking-wider">Công việc</h3>
+                                <p class="text-sm text-gray-700 mt-0.5">Sắp xếp công việc gọn gàng để tối có thời gian thư giãn nha em.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-3xl shadow-sm border border-blue-100 flex gap-3 items-center">
+                            <div class="bg-blue-100 p-2.5 rounded-full text-blue-500"><i class="ph-fill ph-graduation-cap text-xl"></i></div>
+                            <div>
+                                <h3 class="text-[11px] font-bold text-blue-500 uppercase tracking-wider">Học tập</h3>
+                                <p class="text-sm text-gray-700 mt-0.5">Nhớ nghỉ ngơi 10 phút sau mỗi giờ học bài để mắt đỡ mỏi nhé.</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-3xl shadow-sm border border-pink-100 flex gap-3 items-center">
+                            <div class="bg-pink-100 p-2.5 rounded-full text-pink-500"><i class="ph-fill ph-heart text-xl"></i></div>
+                            <div>
+                                <h3 class="text-[11px] font-bold text-pink-500 uppercase tracking-wider">Cá nhân</h3>
+                                <p class="text-sm text-gray-700 mt-0.5">Ăn đủ bữa, ngủ đủ giấc là cách yêu bản thân tốt nhất đó!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tracker Cân nặng -->
+                    <div class="bg-white rounded-[32px] p-6 shadow-sm border border-teal-100 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-teal-50 rounded-bl-full -z-10"></div>
+                        <h3 class="font-bold text-teal-700 mb-4 flex items-center gap-2">
+                            <i class="ph-fill ph-target text-teal-500 text-xl"></i> Tiến độ giảm cân
+                        </h3>
+                        
+                        <div class="flex items-center justify-between mb-6 bg-teal-50/50 p-4 rounded-2xl border border-teal-50">
+                            <div class="text-center">
+                                <p class="text-xs text-teal-600 font-medium mb-2">Hiện tại</p>
+                                <div class="flex items-center gap-3 bg-white px-3 py-1.5 rounded-xl shadow-sm">
+                                    <button onclick="app.changeWeight(-0.1)" class="text-teal-400 hover:text-teal-600 p-1"><i class="ph-bold ph-minus"></i></button>
+                                    <span class="text-xl font-bold text-gray-800 w-12">${this.state.weight.toFixed(1)}</span>
+                                    <button onclick="app.changeWeight(0.1)" class="text-teal-400 hover:text-teal-600 p-1"><i class="ph-bold ph-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="text-teal-200 font-light text-2xl">&rarr;</div>
+                            <div class="text-center px-4">
+                                <p class="text-xs text-teal-600 font-medium mb-2">Mục tiêu</p>
+                                <p class="text-2xl font-bold text-teal-600">52.0<span class="text-sm font-normal">kg</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Thanh tiến độ động -->
+                        <div class="relative pt-2 pb-1">
+                            <div class="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-teal-400 rounded-full transition-all duration-500" style="width: ${progressWidth}%"></div>
+                            </div>
+                            <div class="flex justify-between text-[10px] font-medium text-gray-400 mt-2">
+                                <span>Khởi điểm: 61kg</span>
+                                <span class="text-teal-600 font-bold">Đích: 52kg</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            },
+
+            renderMenu() {
+                const todayData = menuData.find(d => d.dayId === this.state.selectedDay);
+                const isViewingToday = this.state.selectedDay === this.state.realToday;
+                
+                let consumedCalories = 0;
+                todayData.meals.forEach(meal => {
+                    if (this.state.eatenMeals[`${this.state.selectedDay}_${meal.id}`]) {
+                        consumedCalories += meal.cal;
+                    }
+                });
+
+                const waterCount = this.state.waterLog[this.state.selectedDay] || 0;
+                const calWidth = Math.min(100, (consumedCalories / 1200) * 100);
+
+                let mealsHtml = todayData.meals.map((meal, idx) => {
+                    const isEaten = this.state.eatenMeals[`${this.state.selectedDay}_${meal.id}`];
+                    const isCurrentTime = isViewingToday && this.state.currentMealType === meal.id;
+                    
+                    let config = { icon: 'ph-sun', color: 'yellow' };
+                    if(meal.id === 'lunch') config = { icon: 'ph-sun-dim', color: 'orange' };
+                    if(meal.id === 'dinner') config = { icon: 'ph-moon', color: 'indigo' };
+
+                    let wrapperClass = `rounded-[28px] p-5 transition-all border `;
+                    let btnClass = `w-full py-3 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 transition-colors `;
+
+                    if (isEaten) {
+                        wrapperClass += 'bg-gray-50/50 border-gray-100 opacity-70';
+                        btnClass += 'bg-gray-200 text-gray-500';
+                    } else {
+                        wrapperClass += `bg-${config.color}-50 border-${config.color}-200 text-${config.color}-700 `;
+                        if (isCurrentTime) wrapperClass += `ring-2 ring-${config.color}-400 ring-offset-2 `;
+                        btnClass += 'bg-white text-gray-800 shadow-sm hover:shadow-md';
+                    }
+
+                    return `
+                        <div class="${wrapperClass}">
+                            <div class="flex justify-between items-center mb-3">
+                                <div class="flex items-center gap-2 font-bold ${isEaten ? 'text-gray-500' : ''}">
+                                    <i class="ph-fill ${config.icon} text-xl"></i> ${meal.time}
+                                    ${isCurrentTime && !isEaten ? '<span class="text-[10px] bg-red-500 text-white px-2 py-0.5 rounded-full animate-bounce">Tới giờ ăn</span>' : ''}
+                                </div>
+                                <span class="text-xs font-bold bg-white/60 px-2.5 py-1 rounded-xl text-gray-600">${meal.cal} kcal</span>
+                            </div>
+                            <p class="text-sm font-medium mb-4 leading-relaxed ${isEaten ? 'text-gray-400 line-through' : 'text-gray-800'}">${meal.food}</p>
+                            <button onclick="app.toggleMeal('${meal.id}')" class="${btnClass}">
+                                ${isEaten ? '<i class="ph-bold ph-check text-lg"></i> Đã hoàn thành' : 'Đánh dấu đã ăn'}
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <!-- Thanh chọn ngày -->
+                    <div class="flex justify-between items-center bg-white p-2 rounded-full shadow-sm border border-rose-100">
+                        <button onclick="app.changeDay('prev')" class="p-3 text-rose-400 hover:bg-rose-50 rounded-full transition-colors"><i class="ph-bold ph-caret-left text-lg"></i></button>
+                        <h2 class="font-bold text-lg text-gray-800">
+                            ${todayData.name} ${isViewingToday ? '<span class="text-[10px] bg-rose-100 text-rose-600 px-2 py-0.5 rounded-full ml-1 align-middle">Hôm nay</span>' : ''}
+                        </h2>
+                        <button onclick="app.changeDay('next')" class="p-3 text-rose-400 hover:bg-rose-50 rounded-full transition-colors"><i class="ph-bold ph-caret-right text-lg"></i></button>
+                    </div>
+
+                    <!-- Thống kê Calo & Nước -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-[24px] shadow-sm border border-orange-100 flex flex-col justify-center">
+                            <div class="flex items-center gap-1.5 text-orange-500 text-xs font-bold mb-2">
+                                <i class="ph-fill ph-fire text-lg"></i> Nạp vào
+                            </div>
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-2xl font-extrabold text-gray-800">${consumedCalories}</span>
+                                <span class="text-xs text-gray-400">/ 1200 kcal</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-gray-100 rounded-full mt-2">
+                                <div class="h-full bg-orange-400 rounded-full transition-all" style="width: ${calWidth}%"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-[24px] shadow-sm border border-cyan-100 flex flex-col justify-center">
+                            <div class="flex items-center justify-between text-cyan-500 text-xs font-bold mb-2">
+                                <div class="flex items-center gap-1.5"><i class="ph-fill ph-drop text-lg"></i> Nước</div>
+                                <span>${waterCount}/8 ly</span>
+                            </div>
+                            <div class="flex items-center justify-between mt-1">
+                                <button onclick="app.handleWater('sub')" class="w-8 h-8 flex items-center justify-center rounded-full bg-cyan-50 text-cyan-500 active:bg-cyan-100"><i class="ph-bold ph-minus"></i></button>
+                                <span class="text-xl font-extrabold text-gray-800">${waterCount * 250}<span class="text-[10px] text-gray-400 font-normal">ml</span></span>
+                                <button onclick="app.handleWater('add')" class="w-8 h-8 flex items-center justify-center rounded-full bg-cyan-50 text-cyan-500 active:bg-cyan-100"><i class="ph-bold ph-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Danh sách bữa ăn -->
+                    <div class="space-y-4">
+                        ${mealsHtml}
+                    </div>
+                `;
+            },
+
+            renderShop() {
+                const todayData = menuData.find(d => d.dayId === this.state.selectedDay);
+                const isDaily = this.state.shopMode === 'daily';
+                const items = isDaily ? todayData.dailyShop : weeklyShop;
+                
+                let shopItemsHtml = items.map((item, idx) => {
+                    const key = `${this.state.shopMode}_${item}`;
+                    const isChecked = this.state.shopChecked[key];
+                    
+                    let labelClass = `flex items-center gap-3 p-3.5 rounded-2xl transition-all cursor-pointer border border-transparent `;
+                    let boxClass = `w-6 h-6 rounded-full flex items-center justify-center transition-colors `;
+                    let textClass = `text-sm `;
+
+                    if (isChecked) {
+                        labelClass += 'bg-gray-50';
+                        boxClass += 'bg-rose-400 text-white';
+                        textClass += 'line-through text-gray-400';
+                    } else {
+                        labelClass += 'bg-rose-50/30 hover:border-rose-100';
+                        boxClass += 'bg-white border-2 border-rose-200';
+                        textClass += 'text-gray-700 font-medium';
+                    }
+
+                    return `
+                        <label class="${labelClass}" onclick="app.toggleShop('${item}'); event.preventDefault();">
+                            <div class="${boxClass}">
+                                ${isChecked ? '<i class="ph-bold ph-check text-sm"></i>' : ''}
+                            </div>
+                            <span class="${textClass}">${item}</span>
+                        </label>
+                    `;
+                }).join('');
+
+                return `
+                    <!-- Chuyển đổi Ngày / Tuần -->
+                    <div class="bg-gray-100/80 p-1.5 rounded-full flex relative mb-5">
+                        <button onclick="app.setShopMode('daily')" class="flex-1 py-3 text-sm font-bold rounded-full transition-all z-10 ${isDaily ? 'text-rose-600' : 'text-gray-500'}">Mua theo ngày</button>
+                        <button onclick="app.setShopMode('weekly')" class="flex-1 py-3 text-sm font-bold rounded-full transition-all z-10 ${!isDaily ? 'text-rose-600' : 'text-gray-500'}">Mua cả tuần</button>
+                        <div class="absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-white rounded-full shadow-sm transition-transform duration-300 ${!isDaily ? 'translate-x-[calc(100%+6px)]' : 'translate-x-0'}"></div>
+                    </div>
+
+                    <div class="bg-white rounded-[32px] p-6 shadow-sm border border-rose-50">
+                        <h2 class="font-bold text-gray-800 mb-5 flex items-center gap-2">
+                            <i class="ph-fill ph-shopping-cart text-rose-400 text-xl"></i>
+                            ${isDaily ? `Danh sách cho ${todayData.name}` : 'Mua cho cả tuần'}
+                        </h2>
+                        
+                        <div class="space-y-3">
+                            ${shopItemsHtml}
+                        </div>
+                    </div>
+                `;
+            }
+        };
+
+        // Khởi chạy ứng dụng
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>
