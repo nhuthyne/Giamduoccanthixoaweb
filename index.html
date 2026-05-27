@@ -1,516 +1,485 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<title>Nutrition Community Planner</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Nutrition Community</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
 *{
+margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:'Be Vietnam Pro',sans-serif;
 }
 
 body{
-background:#fff7fb;
-color:#374151;
+background:#f4f7fb;
+color:#1e293b;
+padding:20px;
+}
+
+.container{
+max-width:1400px;
+margin:auto;
+}
+
+.header{
+background:white;
+border-radius:24px;
+padding:24px;
+box-shadow:0 10px 30px rgba(0,0,0,0.06);
+margin-bottom:20px;
+}
+
+.title{
+font-size:32px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.sub{
+color:#64748b;
+margin-bottom:24px;
+}
+
+.grid-top{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:14px;
+}
+
+.input-box{
+background:#f8fafc;
+border:1px solid #e2e8f0;
+padding:14px;
+border-radius:16px;
+}
+
+.input-box label{
+font-size:13px;
+color:#64748b;
+display:block;
+margin-bottom:8px;
+}
+
+.input-box input,
+.input-box select{
+width:100%;
+padding:12px;
+border:none;
+background:white;
+border-radius:12px;
+outline:none;
+font-size:15px;
+}
+
+.smart-box{
+margin-top:18px;
+background:linear-gradient(135deg,#4f46e5,#7c3aed);
+padding:18px;
+border-radius:20px;
+color:white;
+}
+
+.smart-box h3{
+margin-bottom:10px;
+}
+
+.main{
+display:grid;
+grid-template-columns:1.2fr 0.8fr;
+gap:20px;
+}
+
+@media(max-width:1000px){
+.main{
+grid-template-columns:1fr;
+}
 }
 
 .card{
 background:white;
 border-radius:24px;
-box-shadow:0 10px 30px rgba(236,72,153,0.08);
+padding:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.05);
 }
 
-.soft{
-background:#fdf2f8;
+.section-title{
+font-size:22px;
+font-weight:700;
+margin-bottom:18px;
 }
 
-.pink{
-background:#ec4899;
+.search{
+width:100%;
+padding:14px;
+border-radius:16px;
+border:none;
+background:#f1f5f9;
+margin-bottom:20px;
+font-size:15px;
 }
 
-.pink-text{
-color:#ec4899;
-}
-
-.border-soft{
-border:1px solid #fbcfe8;
+.food-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:12px;
 }
 
 .food-card{
+background:#f8fafc;
+border:1px solid #e2e8f0;
+border-radius:18px;
+padding:14px;
 transition:0.2s;
 }
 
 .food-card:hover{
-transform:translateY(-2px);
+transform:translateY(-3px);
 }
 
-::-webkit-scrollbar{
-width:5px;
+.food-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
 }
 
-::-webkit-scrollbar-thumb{
-background:#f9a8d4;
+.food-name{
+font-weight:700;
+font-size:15px;
+}
+
+.food-cat{
+font-size:12px;
+color:#64748b;
+margin-top:4px;
+}
+
+.food-cal{
+font-size:14px;
+font-weight:600;
+color:#7c3aed;
+margin:10px 0;
+}
+
+.food-actions{
+display:flex;
+gap:8px;
+}
+
+.food-actions button{
+flex:1;
+border:none;
+padding:10px;
+border-radius:12px;
+cursor:pointer;
+font-weight:600;
+font-size:13px;
+}
+
+.add-btn{
+background:#4f46e5;
+color:white;
+}
+
+.fav-btn{
+background:#f1f5f9;
+}
+
+.meal-tabs{
+display:flex;
+gap:8px;
+margin-bottom:18px;
+flex-wrap:wrap;
+}
+
+.meal-tabs button{
+border:none;
+padding:10px 14px;
+border-radius:12px;
+background:#e2e8f0;
+cursor:pointer;
+font-weight:600;
+}
+
+.meal-tabs .active{
+background:#4f46e5;
+color:white;
+}
+
+.meal-list{
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-bottom:20px;
+}
+
+.meal-item{
+background:#f8fafc;
+border-radius:16px;
+padding:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.meal-item-left{
+display:flex;
+flex-direction:column;
+gap:4px;
+}
+
+.remove-btn{
+background:#ef4444;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:10px;
+cursor:pointer;
+}
+
+.summary{
+background:#f8fafc;
+padding:18px;
+border-radius:20px;
+}
+
+.summary h3{
+margin-bottom:14px;
+}
+
+.summary-row{
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+}
+
+.progress{
+height:14px;
+background:#e2e8f0;
 border-radius:999px;
+overflow:hidden;
+margin-top:14px;
+}
+
+.progress-bar{
+height:100%;
+background:linear-gradient(90deg,#4f46e5,#7c3aed);
+width:0%;
+}
+
+.export-btn{
+width:100%;
+margin-top:18px;
+border:none;
+padding:14px;
+background:#111827;
+color:white;
+font-weight:700;
+border-radius:16px;
+cursor:pointer;
+}
+
+.favorite-wrap{
+margin-top:18px;
+}
+
+.favorite-list{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.favorite-item{
+background:#ede9fe;
+padding:10px 14px;
+border-radius:999px;
+font-size:14px;
+font-weight:600;
+cursor:pointer;
+}
+
+.footer{
+margin-top:30px;
+text-align:center;
+color:#94a3b8;
+font-size:14px;
+}
+
+.hidden{
+display:none;
+}
+
+.show-more{
+margin-top:18px;
+width:100%;
+padding:12px;
+border:none;
+background:#e2e8f0;
+border-radius:14px;
+cursor:pointer;
+font-weight:700;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div class="max-w-7xl mx-auto p-4">
+<div class="container">
 
-<!-- ================= HEADER ================= -->
+<div class="header">
 
-<div class="grid lg:grid-cols-3 gap-4">
-
-<!-- LEFT -->
-
-<div class="lg:col-span-2 card p-4">
-
-<div class="flex justify-between items-center">
-
-<div>
-<h1 class="text-2xl font-extrabold">
-🌸 Nutrition Community
-</h1>
-
-<p class="text-gray-400 text-sm mt-1">
-Smart Calories & Meal Planner
-</p>
+<div class="title">
+🥗 Nutrition Community
 </div>
 
-<button
-onclick="resetAll()"
-class="text-sm text-gray-400 hover:text-pink-500">
-↻ Reset
-</button>
-
+<div class="sub">
+Theo dõi dinh dưỡng • Tính calories • Xây dựng thực đơn thông minh
 </div>
 
-<div class="grid md:grid-cols-4 gap-3 mt-5">
+<div class="grid-top">
 
-<input
-id="height"
-type="number"
-placeholder="Chiều cao"
-class="soft border-soft rounded-2xl p-3 outline-none"
-/>
+<div class="input-box">
+<label>Chiều cao (cm)</label>
+<input type="number" id="height" placeholder="170">
+</div>
 
-<input
-id="weight"
-type="number"
-placeholder="Cân nặng"
-class="soft border-soft rounded-2xl p-3 outline-none"
-/>
+<div class="input-box">
+<label>Cân nặng (kg)</label>
+<input type="number" id="weight" placeholder="60">
+</div>
 
-<input
-id="goalKg"
-type="number"
-placeholder="Giảm bao nhiêu kg"
-class="soft border-soft rounded-2xl p-3 outline-none"
-/>
+<div class="input-box">
+<label>Muốn giảm (kg)</label>
+<input type="number" id="goal" placeholder="5">
+</div>
 
-<button
-onclick="saveProfile()"
-class="pink text-white rounded-2xl font-bold">
-✔ Phân tích
-</button>
+<div class="input-box">
+<label>Mức vận động</label>
+<select id="activity">
+<option value="1.2">Ít vận động</option>
+<option value="1.375">Vận động nhẹ</option>
+<option value="1.55">Vận động vừa</option>
+<option value="1.725">Vận động nhiều</option>
+</select>
+</div>
 
 </div>
 
-<div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+<div class="smart-box">
 
-<div class="soft rounded-2xl p-3">
-<p class="text-xs text-gray-400">
-BMI
-</p>
+<h3>🎯 Gợi ý thông minh</h3>
 
-<h2 id="bmi" class="text-2xl font-black mt-1">
---
-</h2>
-</div>
-
-<div class="soft rounded-2xl p-3">
-<p class="text-xs text-gray-400">
-Mục tiêu kcal
-</p>
-
-<h2 id="targetKcal" class="text-2xl font-black mt-1">
-2000
-</h2>
-</div>
-
-<div class="soft rounded-2xl p-3">
-<p class="text-xs text-gray-400">
-Protein
-</p>
-
-<h2 id="protein" class="text-2xl font-black mt-1">
---
-</h2>
-</div>
-
-<div class="soft rounded-2xl p-3">
-<p class="text-xs text-gray-400">
-Nước
-</p>
-
-<h2 id="waterNeed" class="text-2xl font-black mt-1">
---
-</h2>
+<div id="aiResult">
+Nhập thông tin để nhận khuyến nghị dinh dưỡng.
 </div>
 
 </div>
 
 </div>
 
-<!-- RIGHT -->
+<div class="main">
 
-<div class="space-y-4">
+<div class="card">
 
-<div class="card p-4">
-
-<div class="flex justify-between items-center">
-
-<h2 class="font-bold">
-💧 Nước uống
-</h2>
-
-<span
-id="waterCount"
-class="pink-text font-bold">
-0 / 2000ml
-</span>
-
+<div class="section-title">
+🍱 Kho thực phẩm
 </div>
 
-<div class="w-full bg-pink-100 rounded-full h-3 overflow-hidden mt-3">
-
-<div
-id="waterBar"
-class="pink h-3 rounded-full"
-style="width:0%">
-</div>
-
-</div>
-
-<div class="grid grid-cols-2 gap-2 mt-3">
-
-<button
-onclick="addWater(250)"
-class="soft rounded-xl py-2 pink-text font-bold">
-+250ml
-</button>
-
-<button
-onclick="addWater(500)"
-class="soft rounded-xl py-2 pink-text font-bold">
-+500ml
-</button>
-
-</div>
-
-</div>
-
-<div class="card p-4">
-
-<h2 class="font-bold mb-3">
-🧠 Phân tích thông minh
-</h2>
-
-<div
-id="analysis"
-class="space-y-2 text-sm">
-
-<div class="soft rounded-xl p-3">
-Chưa có dữ liệu hôm nay.
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ================= MAIN ================= -->
-
-<div class="grid lg:grid-cols-3 gap-4 mt-4">
-
-<!-- LEFT -->
-
-<div class="lg:col-span-2 card p-4">
-
-<div class="flex flex-col lg:flex-row gap-3 justify-between">
-
-<div>
-<h2 class="text-2xl font-extrabold">
-🛒 Kho thực phẩm
-</h2>
-
-<p class="text-gray-400 text-sm mt-1">
-Chọn món ăn và tạo thực đơn
-</p>
-
-</div>
-
-<input
+<input 
+type="text" 
+class="search"
 id="search"
-type="text"
-placeholder="Tìm món..."
-onkeyup="renderFoods()"
-class="soft border-soft rounded-2xl px-4 py-3 outline-none lg:w-72"
-/>
+placeholder="Tìm món ăn..."
+>
+
+<div class="food-grid" id="foodGrid"></div>
+
+<button class="show-more" id="showMoreBtn">
+Xem thêm
+</button>
 
 </div>
 
-<!-- FILTER -->
+<div>
 
-<div class="flex flex-wrap gap-2 mt-5 mb-5">
+<div class="card">
 
-<button
-onclick="filterFood(event,'all')"
-class="filterBtn pink text-white px-4 py-2 rounded-full text-sm font-semibold">
-Tất cả
+<div class="section-title">
+📋 Thực đơn hôm nay
+</div>
+
+<div class="meal-tabs">
+
+<button class="active" onclick="setMeal('breakfast',this)">
+🌅 Sáng
 </button>
 
-<button
-onclick="filterFood(event,'favorite')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
+<button onclick="setMeal('lunch',this)">
+☀️ Trưa
+</button>
+
+<button onclick="setMeal('dinner',this)">
+🌙 Tối
+</button>
+
+<button onclick="setMeal('snack',this)">
+🍓 Phụ
+</button>
+
+</div>
+
+<div class="meal-list" id="mealList"></div>
+
+<div class="summary">
+
+<h3>📊 Tổng kết</h3>
+
+<div class="summary-row">
+<span>Total Calories</span>
+<b id="totalCal">0 kcal</b>
+</div>
+
+<div class="summary-row">
+<span>Protein</span>
+<b id="totalProtein">0g</b>
+</div>
+
+<div class="summary-row">
+<span>Carb</span>
+<b id="totalCarb">0g</b>
+</div>
+
+<div class="summary-row">
+<span>Fat</span>
+<b id="totalFat">0g</b>
+</div>
+
+<div class="progress">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+</div>
+
+<button class="export-btn" onclick="exportMeal()">
+📥 Xuất thực đơn
+</button>
+
+<div class="favorite-wrap">
+
+<div class="section-title" style="font-size:18px">
 ❤️ Yêu thích
-</button>
-
-<button
-onclick="filterFood(event,'Thịt')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
-🥩 Thịt
-</button>
-
-<button
-onclick="filterFood(event,'Cá')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
-🐟 Cá
-</button>
-
-<button
-onclick="filterFood(event,'Hải sản')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
-🦐 Hải sản
-</button>
-
-<button
-onclick="filterFood(event,'Rau')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
-🥬 Rau
-</button>
-
-<button
-onclick="filterFood(event,'Trái cây')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
-🍎 Trái cây
-</button>
-
-<button
-onclick="filterFood(event,'Tinh bột')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
-🍚 Tinh bột
-</button>
-
-<button
-onclick="filterFood(event,'Đậu')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
-🫘 Đậu
-</button>
-
-<button
-onclick="filterFood(event,'Nước uống')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
-🥤 Nước
-</button>
-
-<button
-onclick="filterFood(event,'Gia vị')"
-class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
-🧂 Gia vị
-</button>
-
 </div>
 
-<!-- FOOD LIST -->
-
-<div
-id="foods"
-class="grid md:grid-cols-2 gap-4">
-</div>
-
-</div>
-
-<!-- RIGHT -->
-
-<div class="card p-4">
-
-<div class="flex justify-between items-center">
-
-<div>
-
-<h2 class="text-2xl font-extrabold">
-🍱 Thực đơn hôm nay
-</h2>
-
-<p class="text-gray-400 text-sm">
-Sáng • Trưa • Tối • Ăn vặt
-</p>
-
-</div>
-
-<div class="text-right">
-
-<p class="text-xs text-gray-400">
-Tổng hôm nay
-</p>
-
-<h2 class="text-2xl font-black pink-text">
-<span id="totalKcal">0</span> kcal
-</h2>
-
-</div>
-
-</div>
-
-<div class="w-full bg-pink-100 rounded-full h-3 overflow-hidden mt-4">
-
-<div
-id="kcalBar"
-class="pink h-3 rounded-full"
-style="width:0%">
-</div>
-
-</div>
-
-<!-- MEALS -->
-
-<div class="space-y-4 mt-5">
-
-<div>
-
-<div class="flex justify-between mb-2">
-
-<h3 class="font-bold">
-🌅 Bữa sáng
-</h3>
-
-<span id="breakfastTotal" class="pink-text font-bold">
-0 kcal
-</span>
-
-</div>
-
-<div
-id="breakfast"
-class="soft rounded-2xl p-3 space-y-2">
-</div>
-
-</div>
-
-<div>
-
-<div class="flex justify-between mb-2">
-
-<h3 class="font-bold">
-☀ Bữa trưa
-</h3>
-
-<span id="lunchTotal" class="pink-text font-bold">
-0 kcal
-</span>
-
-</div>
-
-<div
-id="lunch"
-class="soft rounded-2xl p-3 space-y-2">
-</div>
-
-</div>
-
-<div>
-
-<div class="flex justify-between mb-2">
-
-<h3 class="font-bold">
-🌙 Bữa tối
-</h3>
-
-<span id="dinnerTotal" class="pink-text font-bold">
-0 kcal
-</span>
-
-</div>
-
-<div
-id="dinner"
-class="soft rounded-2xl p-3 space-y-2">
-</div>
-
-</div>
-
-<div>
-
-<div class="flex justify-between mb-2">
-
-<h3 class="font-bold">
-🍪 Ăn vặt
-</h3>
-
-<span id="snackTotal" class="pink-text font-bold">
-0 kcal
-</span>
-
-</div>
-
-<div
-id="snack"
-class="soft rounded-2xl p-3 space-y-2">
-</div>
-
-</div>
-
-</div>
-
-<!-- BUTTONS -->
-
-<div class="grid grid-cols-2 gap-3 mt-5">
-
-<button
-onclick="analyzeMeal()"
-class="bg-blue-50 text-blue-500 rounded-2xl py-3 font-bold">
-📊 Phân tích
-</button>
-
-<button
-onclick="exportMeal()"
-class="bg-green-50 text-green-500 rounded-2xl py-3 font-bold">
-📋 Xuất thực đơn
-</button>
-
-</div>
-
-<button
-onclick="resetMeal()"
-class="w-full mt-3 border border-pink-200 text-pink-400 rounded-2xl py-3 font-bold">
-🗑 Reset hôm nay
-</button>
+<div class="favorite-list" id="favoriteList"></div>
 
 </div>
 
@@ -518,107 +487,71 @@ class="w-full mt-3 border border-pink-200 text-pink-400 rounded-2xl py-3 font-bo
 
 </div>
 
-<footer class="text-center py-8 text-gray-400 text-sm">
+<div class="footer">
 Created by Bao Hy
-</footer>
+</div>
+
+</div>
 
 <script>
 
-/* ================= FULL FOOD DATA ================= */
+/* ================= FOOD DATA ================= */
 
 const foods = [
 
-{name:"Ba chỉ heo",cal:518,cat:"Thịt",icon:"🥓"},
-{name:"Nạc vai heo",cal:242,cat:"Thịt",icon:"🥩"},
-{name:"Nạc dăm heo",cal:250,cat:"Thịt",icon:"🥩"},
-{name:"Thăn heo",cal:143,cat:"Thịt",icon:"🥩"},
-{name:"Sườn non",cal:277,cat:"Thịt",icon:"🍖"},
-{name:"Chân giò",cal:290,cat:"Thịt",icon:"🍖"},
-{name:"Da heo",cal:544,cat:"Thịt",icon:"🥓"},
-{name:"Tim heo",cal:153,cat:"Thịt",icon:"❤️"},
-{name:"Gan heo",cal:165,cat:"Thịt",icon:"🩸"},
-{name:"Óc heo",cal:143,cat:"Thịt",icon:"🧠"},
-{name:"Ruột heo",cal:168,cat:"Thịt",icon:"🥩"},
+{name:"Ba chỉ heo",cal:518,protein:9,fat:53,carb:0,cat:"Thịt",icon:"🥓"},
+{name:"Nạc vai heo",cal:242,protein:27,fat:14,carb:0,cat:"Thịt",icon:"🥩"},
+{name:"Nạc dăm heo",cal:250,protein:25,fat:16,carb:0,cat:"Thịt",icon:"🥩"},
+{name:"Thăn heo",cal:143,protein:21,fat:6,carb:0,cat:"Thịt",icon:"🥩"},
+{name:"Sườn non",cal:277,protein:18,fat:23,carb:0,cat:"Thịt",icon:"🍖"},
+{name:"Chân giò",cal:290,protein:20,fat:24,carb:0,cat:"Thịt",icon:"🍖"},
+{name:"Da heo",cal:544,protein:9,fat:58,carb:0,cat:"Thịt",icon:"🥓"},
+{name:"Tim heo",cal:153,protein:16,fat:9,carb:0,cat:"Thịt",icon:"❤️"},
+{name:"Gan heo",cal:165,protein:26,fat:5,carb:3,cat:"Thịt",icon:"🩸"},
+{name:"Óc heo",cal:143,protein:11,fat:10,carb:1,cat:"Thịt",icon:"🧠"},
+{name:"Ruột heo",cal:168,protein:15,fat:11,carb:0,cat:"Thịt",icon:"🥩"},
 
-{name:"Thăn bò",cal:187,cat:"Thịt",icon:"🥩"},
-{name:"Bắp bò",cal:201,cat:"Thịt",icon:"🥩"},
-{name:"Nạm bò",cal:250,cat:"Thịt",icon:"🥩"},
-{name:"Gầu bò",cal:310,cat:"Thịt",icon:"🥩"},
-{name:"Gân bò",cal:125,cat:"Thịt",icon:"🥩"},
-{name:"Tim bò",cal:112,cat:"Thịt",icon:"❤️"},
-{name:"Gan bò",cal:135,cat:"Thịt",icon:"🩸"},
-{name:"Lưỡi bò",cal:224,cat:"Thịt",icon:"🥩"},
+{name:"Thăn bò",cal:187,protein:27,fat:8,carb:0,cat:"Thịt",icon:"🥩"},
+{name:"Bắp bò",cal:201,protein:28,fat:9,carb:0,cat:"Thịt",icon:"🥩"},
+{name:"Nạm bò",cal:250,protein:25,fat:17,carb:0,cat:"Thịt",icon:"🥩"},
+{name:"Gầu bò",cal:310,protein:22,fat:25,carb:0,cat:"Thịt",icon:"🥩"},
+{name:"Gân bò",cal:125,protein:21,fat:4,carb:0,cat:"Thịt",icon:"🥩"},
+{name:"Tim bò",cal:112,protein:17,fat:4,carb:0,cat:"Thịt",icon:"❤️"},
+{name:"Gan bò",cal:135,protein:20,fat:5,carb:3,cat:"Thịt",icon:"🩸"},
+{name:"Lưỡi bò",cal:224,protein:16,fat:18,carb:0,cat:"Thịt",icon:"🥩"},
 
-{name:"Ức gà",cal:165,cat:"Thịt",icon:"🍗"},
-{name:"Đùi gà",cal:215,cat:"Thịt",icon:"🍗"},
-{name:"Cánh gà",cal:290,cat:"Thịt",icon:"🍗"},
-{name:"Da gà",cal:450,cat:"Thịt",icon:"🍗"},
-{name:"Chân gà",cal:215,cat:"Thịt",icon:"🍗"},
-{name:"Gan gà",cal:119,cat:"Thịt",icon:"🍗"},
-{name:"Trứng gà",cal:155,cat:"Thịt",icon:"🥚"},
+{name:"Ức gà",cal:165,protein:31,fat:3,carb:0,cat:"Thịt",icon:"🍗"},
+{name:"Đùi gà",cal:215,protein:27,fat:11,carb:0,cat:"Thịt",icon:"🍗"},
+{name:"Cánh gà",cal:290,protein:27,fat:20,carb:0,cat:"Thịt",icon:"🍗"},
+{name:"Da gà",cal:450,protein:20,fat:40,carb:0,cat:"Thịt",icon:"🍗"},
+{name:"Chân gà",cal:215,protein:19,fat:15,carb:0,cat:"Thịt",icon:"🍗"},
+{name:"Gan gà",cal:119,protein:17,fat:5,carb:1,cat:"Thịt",icon:"🍗"},
+{name:"Trứng gà",cal:155,protein:13,fat:11,carb:1,cat:"Thịt",icon:"🥚"},
 
-{name:"Cá hồi",cal:208,cat:"Cá",icon:"🐟"},
-{name:"Cá basa",cal:120,cat:"Cá",icon:"🐟"},
-{name:"Cá thu",cal:205,cat:"Cá",icon:"🐟"},
-{name:"Cá ngừ",cal:132,cat:"Cá",icon:"🐟"},
-{name:"Cá rô phi",cal:128,cat:"Cá",icon:"🐟"},
-{name:"Cá lóc",cal:97,cat:"Cá",icon:"🐟"},
-{name:"Cá nục",cal:180,cat:"Cá",icon:"🐟"},
-{name:"Cá cơm",cal:210,cat:"Cá",icon:"🐟"},
-{name:"Cá trê",cal:144,cat:"Cá",icon:"🐟"},
+{name:"Cá hồi",cal:208,protein:20,fat:13,carb:0,cat:"Cá",icon:"🐟"},
+{name:"Cá basa",cal:120,protein:20,fat:4,carb:0,cat:"Cá",icon:"🐟"},
+{name:"Cá thu",cal:205,protein:19,fat:14,carb:0,cat:"Cá",icon:"🐟"},
+{name:"Cá ngừ",cal:132,protein:28,fat:1,carb:0,cat:"Cá",icon:"🐟"},
+{name:"Cá rô phi",cal:128,protein:26,fat:2,carb:0,cat:"Cá",icon:"🐟"},
+{name:"Cá lóc",cal:97,protein:20,fat:2,carb:0,cat:"Cá",icon:"🐟"},
+{name:"Cá nục",cal:180,protein:22,fat:10,carb:0,cat:"Cá",icon:"🐟"},
+{name:"Cá cơm",cal:210,protein:29,fat:10,carb:0,cat:"Cá",icon:"🐟"},
+{name:"Cá trê",cal:144,protein:18,fat:8,carb:0,cat:"Cá",icon:"🐟"},
 
-{name:"Tôm",cal:99,cat:"Hải sản",icon:"🦐"},
-{name:"Mực",cal:92,cat:"Hải sản",icon:"🦑"},
-{name:"Bạch tuộc",cal:82,cat:"Hải sản",icon:"🐙"},
-{name:"Cua",cal:97,cat:"Hải sản",icon:"🦀"},
-{name:"Ghẹ",cal:87,cat:"Hải sản",icon:"🦀"},
-{name:"Hàu",cal:68,cat:"Hải sản",icon:"🦪"},
-{name:"Sò huyết",cal:74,cat:"Hải sản",icon:"🦪"},
-
-{name:"Khoai lang",cal:86,cat:"Tinh bột",icon:"🍠"},
-{name:"Khoai tây",cal:77,cat:"Tinh bột",icon:"🥔"},
-{name:"Khoai môn",cal:112,cat:"Tinh bột",icon:"🍠"},
-{name:"Sắn",cal:160,cat:"Tinh bột",icon:"🌿"},
-{name:"Cà rốt",cal:41,cat:"Rau",icon:"🥕"},
-{name:"Củ cải trắng",cal:18,cat:"Rau",icon:"🥬"},
-{name:"Củ dền",cal:43,cat:"Rau",icon:"🥬"},
-
-{name:"Rau muống",cal:19,cat:"Rau",icon:"🥬"},
-{name:"Cải xanh",cal:27,cat:"Rau",icon:"🥬"},
-{name:"Xà lách",cal:15,cat:"Rau",icon:"🥗"},
-{name:"Cải bó xôi",cal:23,cat:"Rau",icon:"🥬"},
-{name:"Bắp cải",cal:25,cat:"Rau",icon:"🥬"},
-{name:"Dưa leo",cal:15,cat:"Rau",icon:"🥒"},
-{name:"Cà chua",cal:18,cat:"Rau",icon:"🍅"},
-
-{name:"Chuối",cal:89,cat:"Trái cây",icon:"🍌"},
-{name:"Táo",cal:52,cat:"Trái cây",icon:"🍎"},
-{name:"Cam",cal:47,cat:"Trái cây",icon:"🍊"},
-{name:"Xoài",cal:60,cat:"Trái cây",icon:"🥭"},
-{name:"Dưa hấu",cal:30,cat:"Trái cây",icon:"🍉"},
-{name:"Bơ",cal:160,cat:"Trái cây",icon:"🥑"},
-{name:"Ổi",cal:68,cat:"Trái cây",icon:"🍏"},
-{name:"Thanh long",cal:60,cat:"Trái cây",icon:"🐉"},
-{name:"Sầu riêng",cal:147,cat:"Trái cây",icon:"🟡"},
-
-{name:"Cơm trắng",cal:130,cat:"Tinh bột",icon:"🍚"},
-{name:"Bún",cal:110,cat:"Tinh bột",icon:"🍜"},
-{name:"Phở",cal:108,cat:"Tinh bột",icon:"🍜"},
-{name:"Hủ tiếu",cal:112,cat:"Tinh bột",icon:"🍜"},
-{name:"Mì gói",cal:470,cat:"Tinh bột",icon:"🍜"},
-{name:"Yến mạch",cal:389,cat:"Tinh bột",icon:"🌾"},
-{name:"Bánh mì",cal:265,cat:"Tinh bột",icon:"🍞"},
-
-{name:"Đậu hũ",cal:76,cat:"Đậu",icon:"🧈"},
-{name:"Đậu nành",cal:173,cat:"Đậu",icon:"🫘"},
-{name:"Đậu xanh",cal:347,cat:"Đậu",icon:"🫘"},
-{name:"Đậu đỏ",cal:330,cat:"Đậu",icon:"🫘"},
-{name:"Đậu đen",cal:340,cat:"Đậu",icon:"🫘"},
-{name:"Đậu phộng",cal:567,cat:"Đậu",icon:"🥜"}
+{name:"Tôm",cal:99,protein:24,fat:1,carb:0,cat:"Hải sản",icon:"🦐"},
+{name:"Mực",cal:92,protein:16,fat:1,carb:3,cat:"Hải sản",icon:"🦑"},
+{name:"Bạch tuộc",cal:82,protein:15,fat:1,carb:2,cat:"Hải sản",icon:"🐙"},
+{name:"Cua",cal:97,protein:19,fat:1,carb:0,cat:"Hải sản",icon:"🦀"},
+{name:"Ghẹ",cal:87,protein:18,fat:1,carb:0,cat:"Hải sản",icon:"🦀"},
+{name:"Hàu",cal:68,protein:7,fat:2,carb:4,cat:"Hải sản",icon:"🦪"},
+{name:"Sò huyết",cal:74,protein:13,fat:1,carb:2,cat:"Hải sản",icon:"🦪"}
 
 ];
 
-/* ================= VARIABLES ================= */
+/* ================= APP ================= */
+
+let visibleFoods = 20;
+let currentMeal = "breakfast";
 
 let meals = {
 breakfast:[],
@@ -627,598 +560,307 @@ dinner:[],
 snack:[]
 };
 
-let favorites =
-JSON.parse(localStorage.getItem("favorites")) || [];
-
-let filter = "all";
-
-let targetKcal = 2000;
-
-let water = 0;
-
-let visibleFoods = 8;
-
-/* ================= SAFE ID ================= */
-
-function safeId(text){
-
-return text
-.replace(/\s+/g,'-')
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g,"");
-
-}
-
-/* ================= RENDER FOODS ================= */
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 function renderFoods(){
 
-const search =
-document.getElementById("search")
-.value
-.toLowerCase();
+const grid = document.getElementById("foodGrid");
+grid.innerHTML="";
 
-const container =
-document.getElementById("foods");
+const search = document.getElementById("search").value.toLowerCase();
 
-container.innerHTML = "";
-
-const filteredFoods = foods.filter(food=>{
-
-const matchSearch =
-food.name.toLowerCase().includes(search);
-
-const matchFilter =
-filter==="all"
-|| food.cat===filter
-|| (
-filter==="favorite"
-&& favorites.includes(food.name)
+const filtered = foods.filter(f=>
+f.name.toLowerCase().includes(search)
 );
 
-return matchSearch && matchFilter;
+filtered.slice(0,visibleFoods).forEach(food=>{
 
-});
+grid.innerHTML += `
+<div class="food-card">
 
-filteredFoods
-.slice(0,visibleFoods)
-.forEach(food=>{
-
-container.innerHTML += `
-
-<div class="food-card border border-pink-100 rounded-2xl p-4">
-
-<div class="flex justify-between items-start">
-
-<div class="flex gap-3">
-
-<div class="soft w-12 h-12 rounded-2xl flex items-center justify-center text-2xl">
-${food.icon}
+<div class="food-top">
+<div>
+<div class="food-name">
+${food.icon} ${food.name}
+</div>
+<div class="food-cat">
+${food.cat}
+</div>
+</div>
 </div>
 
-<div>
-
-<h3 class="font-bold">
-${food.name}
-</h3>
-
-<div class="inline-block mt-1 bg-pink-100 text-pink-500 px-2 py-1 rounded-full text-xs font-bold">
+<div class="food-cal">
 ${food.cal} kcal / 100g
 </div>
 
-</div>
+<div class="food-actions">
 
-</div>
-
-<button
-onclick="toggleFavorite('${food.name}')"
-class="text-xl">
-${favorites.includes(food.name) ? "❤️" : "🤍"}
+<button class="add-btn"
+onclick='addFood(${JSON.stringify(food)})'>
+Thêm
 </button>
 
-</div>
-
-<div class="grid grid-cols-3 gap-2 mt-4">
-
-<input
-type="number"
-value="100"
-id="${safeId(food.name)}"
-class="soft border-soft rounded-xl px-3 py-2 outline-none"
-/>
-
-<select
-id="meal-${safeId(food.name)}"
-class="soft border-soft rounded-xl px-2">
-
-<option value="breakfast">
-Sáng
-</option>
-
-<option value="lunch">
-Trưa
-</option>
-
-<option value="dinner">
-Tối
-</option>
-
-<option value="snack">
-Ăn vặt
-</option>
-
-</select>
-
-<button
-onclick="addFood('${food.name}',${food.cal})"
-class="pink text-white rounded-xl font-bold">
-+
+<button class="fav-btn"
+onclick='addFavorite(${JSON.stringify(food)})'>
+❤️
 </button>
 
 </div>
 
 </div>
-
 `;
 
 });
 
-if(filteredFoods.length > visibleFoods){
+}
 
-container.innerHTML += `
+function addFood(food){
 
-<button
-onclick="showMoreFoods()"
-class="col-span-full soft border-soft rounded-2xl py-3 font-bold pink-text">
+const gram = prompt(`Nhập số gram cho ${food.name}`);
 
-Xem thêm món ăn ↓
+if(!gram) return;
 
+const factor = gram/100;
+
+meals[currentMeal].push({
+...food,
+gram:gram,
+totalCal:Math.round(food.cal*factor),
+totalProtein:Math.round(food.protein*factor),
+totalFat:Math.round(food.fat*factor),
+totalCarb:Math.round(food.carb*factor)
+});
+
+renderMeal();
+
+}
+
+function renderMeal(){
+
+const list = document.getElementById("mealList");
+
+list.innerHTML="";
+
+let totalCal=0;
+let totalProtein=0;
+let totalFat=0;
+let totalCarb=0;
+
+Object.keys(meals).forEach(type=>{
+
+meals[type].forEach((food,index)=>{
+
+totalCal += food.totalCal;
+totalProtein += food.totalProtein;
+totalFat += food.totalFat;
+totalCarb += food.totalCarb;
+
+list.innerHTML += `
+<div class="meal-item">
+
+<div class="meal-item-left">
+<b>${food.icon} ${food.name}</b>
+<span>${food.gram}g • ${food.totalCal} kcal • ${type}</span>
+</div>
+
+<button class="remove-btn"
+onclick="removeFood('${type}',${index})">
+X
 </button>
 
+</div>
 `;
-
-}
-
-}
-
-/* ================= FILTER ================= */
-
-function filterFood(event,cat){
-
-filter = cat;
-
-document.querySelectorAll(".filterBtn")
-.forEach(btn=>{
-
-btn.classList.remove(
-"pink",
-"text-white"
-);
-
-btn.classList.add("soft");
 
 });
 
-event.target.classList.add(
-"pink",
-"text-white"
-);
+});
 
-renderFoods();
+document.getElementById("totalCal").innerText =
+totalCal + " kcal";
 
-}
+document.getElementById("totalProtein").innerText =
+totalProtein + "g";
 
-/* ================= SHOW MORE ================= */
+document.getElementById("totalFat").innerText =
+totalFat + "g";
 
-function showMoreFoods(){
+document.getElementById("totalCarb").innerText =
+totalCarb + "g";
 
-visibleFoods += 8;
+const target = calculateCalories();
 
-renderFoods();
+const percent = Math.min((totalCal/target)*100,100);
 
-}
-
-/* ================= FAVORITES ================= */
-
-function toggleFavorite(name){
-
-if(favorites.includes(name)){
-
-favorites =
-favorites.filter(item=>item!==name);
-
-}
-else{
-
-favorites.push(name);
+document.getElementById("progressBar").style.width =
+percent + "%";
 
 }
 
+function removeFood(type,index){
+meals[type].splice(index,1);
+renderMeal();
+}
+
+function setMeal(type,btn){
+
+currentMeal = type;
+
+document.querySelectorAll(".meal-tabs button")
+.forEach(b=>b.classList.remove("active"));
+
+btn.classList.add("active");
+
+}
+
+function calculateCalories(){
+
+const weight =
+parseFloat(document.getElementById("weight").value)||60;
+
+const height =
+parseFloat(document.getElementById("height").value)||170;
+
+const activity =
+parseFloat(document.getElementById("activity").value);
+
+const bmr =
+10*weight + 6.25*height - 5*20 + 5;
+
+const tdee = bmr*activity;
+
+return Math.round(tdee-300);
+
+}
+
+function updateAI(){
+
+const target = calculateCalories();
+
+document.getElementById("aiResult").innerHTML = `
+🔥 Calories mục tiêu:
+<b>${target} kcal/ngày</b>
+
+<br><br>
+
+🥩 Protein nên ăn:
+<b>${Math.round(target*0.3/4)}g</b>
+
+<br>
+
+🍚 Carb:
+<b>${Math.round(target*0.4/4)}g</b>
+
+<br>
+
+🥑 Fat:
+<b>${Math.round(target*0.3/9)}g</b>
+
+<br><br>
+
+💡 Gợi ý:
+- Ưu tiên đạm nạc
+- Ăn nhiều rau
+- Hạn chế trà sữa & mì gói
+- Uống đủ nước
+`;
+}
+
+function addFavorite(food){
+
+if(!favorites.find(f=>f.name===food.name)){
+favorites.push(food);
 localStorage.setItem(
 "favorites",
 JSON.stringify(favorites)
 );
+}
 
-renderFoods();
+renderFavorites();
 
 }
 
-/* ================= ADD FOOD ================= */
+function renderFavorites(){
 
-function addFood(name,cal){
+const wrap =
+document.getElementById("favoriteList");
 
-const gram =
-Number(
-document.getElementById(
-safeId(name)
-).value
-);
+wrap.innerHTML="";
 
-const mealType =
-document.getElementById(
-`meal-${safeId(name)}`
-).value;
+favorites.forEach(food=>{
 
-const kcal =
-Math.round((gram*cal)/100);
-
-meals[mealType].push({
-name,
-gram,
-kcal
-});
-
-updateMeals();
-
-}
-
-/* ================= UPDATE MEALS ================= */
-
-function updateMeals(){
-
-["breakfast","lunch","dinner","snack"]
-.forEach(type=>{
-
-const container =
-document.getElementById(type);
-
-container.innerHTML = "";
-
-let total = 0;
-
-meals[type].forEach((item,index)=>{
-
-total += item.kcal;
-
-container.innerHTML += `
-
-<div class="bg-white rounded-xl p-3 flex justify-between items-center">
-
-<div>
-
-<h3 class="font-bold text-sm">
-${item.name}
-</h3>
-
-<p class="text-xs text-gray-400">
-${item.gram}g
-</p>
-
+wrap.innerHTML += `
+<div class="favorite-item"
+onclick='addFood(${JSON.stringify(food)})'>
+${food.icon} ${food.name}
 </div>
-
-<div class="flex items-center gap-3">
-
-<div class="pink-text font-black text-sm">
-${item.kcal} kcal
-</div>
-
-<button
-onclick="removeFood('${type}',${index})"
-class="text-red-400">
-✕
-</button>
-
-</div>
-
-</div>
-
 `;
 
 });
 
-if(meals[type].length===0){
-
-container.innerHTML = `
-<div class="text-center text-gray-400 text-sm">
-Chưa có món ăn 🍴
-</div>
-`;
-
 }
-
-document.getElementById(type+"Total")
-.innerText = total + " kcal";
-
-});
-
-updateTotal();
-analyzeMeal();
-
-}
-
-/* ================= REMOVE FOOD ================= */
-
-function removeFood(type,index){
-
-meals[type].splice(index,1);
-
-updateMeals();
-
-}
-
-/* ================= TOTAL ================= */
-
-function updateTotal(){
-
-const total =
-getMealTotal("breakfast")
-+ getMealTotal("lunch")
-+ getMealTotal("dinner")
-+ getMealTotal("snack");
-
-document.getElementById("totalKcal")
-.innerText = total;
-
-let percent =
-(total/targetKcal)*100;
-
-if(percent>100){
-percent=100;
-}
-
-document.getElementById("kcalBar")
-.style.width = percent+"%";
-
-}
-
-/* ================= GET TOTAL ================= */
-
-function getMealTotal(type){
-
-return meals[type]
-.reduce((sum,item)=>sum+item.kcal,0);
-
-}
-
-/* ================= ANALYZE ================= */
-
-function analyzeMeal(){
-
-const total =
-getMealTotal("breakfast")
-+ getMealTotal("lunch")
-+ getMealTotal("dinner")
-+ getMealTotal("snack");
-
-const box =
-document.getElementById("analysis");
-
-let html = "";
-
-if(total===0){
-
-html += `
-<div class="soft rounded-xl p-3">
-Chưa có dữ liệu hôm nay.
-</div>
-`;
-
-box.innerHTML = html;
-return;
-
-}
-
-if(total > targetKcal){
-
-html += `
-<div class="bg-red-50 text-red-500 rounded-xl p-3">
-🚨 Bạn đã vượt mục tiêu calo hôm nay.
-</div>
-`;
-
-}
-else{
-
-html += `
-<div class="bg-green-50 text-green-500 rounded-xl p-3">
-✨ Bạn còn ${targetKcal-total} kcal hôm nay.
-</div>
-`;
-
-}
-
-html += `
-<div class="soft rounded-xl p-3">
-💡 Gợi ý: ăn thêm rau xanh hoặc cá để cân bằng dinh dưỡng.
-</div>
-`;
-
-box.innerHTML = html;
-
-}
-
-/* ================= PROFILE ================= */
-
-function saveProfile(){
-
-const height =
-Number(
-document.getElementById("height").value
-);
-
-const weight =
-Number(
-document.getElementById("weight").value
-);
-
-if(!height || !weight){
-
-alert("Nhập chiều cao và cân nặng");
-
-return;
-
-}
-
-const bmi =
-(weight / ((height/100)**2))
-.toFixed(1);
-
-document.getElementById("bmi")
-.innerText = bmi;
-
-targetKcal =
-Math.round(
-(10*weight + 6.25*height - 5*18 + 5)
-*1.35
--350
-);
-
-document.getElementById("targetKcal")
-.innerText = targetKcal;
-
-document.getElementById("protein")
-.innerText =
-Math.round(weight*1.6)+"g";
-
-document.getElementById("waterNeed")
-.innerText =
-(weight*0.035).toFixed(1)+"L";
-
-}
-
-/* ================= WATER ================= */
-
-function addWater(amount){
-
-water += amount;
-
-if(water>2000){
-water=2000;
-}
-
-document.getElementById("waterCount")
-.innerText =
-water+" / 2000ml";
-
-document.getElementById("waterBar")
-.style.width =
-(water/2000)*100+"%";
-
-}
-
-/* ================= EXPORT ================= */
 
 function exportMeal(){
 
 let text = `
-🌸 THỰC ĐƠN HÔM NAY 🌸
+THỰC ĐƠN HÔM NAY
 
 `;
 
-const titles = {
-
-breakfast:"🌅 BỮA SÁNG",
-lunch:"☀ BỮA TRƯA",
-dinner:"🌙 BỮA TỐI",
-snack:"🍪 ĂN VẶT"
-
-};
-
-["breakfast","lunch","dinner","snack"]
-.forEach(type=>{
+Object.keys(meals).forEach(type=>{
 
 text += `
-${titles[type]}
-
+${type.toUpperCase()}
 `;
 
-meals[type].forEach(item=>{
+meals[type].forEach(food=>{
 
 text += `
-• ${item.name}
-${item.gram}g
-${item.kcal} kcal
-
+- ${food.name}
+${food.gram}g
+${food.totalCal} kcal
 `;
 
 });
 
-text += `
-Tổng:
-${getMealTotal(type)} kcal
-
-`;
-
 });
 
-const total =
-getMealTotal("breakfast")
-+ getMealTotal("lunch")
-+ getMealTotal("dinner")
-+ getMealTotal("snack");
-
-text += `
-🔥 TỔNG:
-${total} kcal
-
-🎯 Mục tiêu:
-${targetKcal} kcal
-
-Created by Bao Hy
-`;
-
-const blob =
-new Blob([text],{
-type:"text/plain;charset=utf-8"
+const blob = new Blob([text],{
+type:"text/plain"
 });
 
-const a =
-document.createElement("a");
+const a = document.createElement("a");
 
-a.href =
-URL.createObjectURL(blob);
+a.href = URL.createObjectURL(blob);
 
-a.download =
-"thuc-don.txt";
+a.download = "thuc-don.txt";
 
 a.click();
 
 }
 
-/* ================= RESET ================= */
+document
+.getElementById("showMoreBtn")
+.onclick = ()=>{
 
-function resetMeal(){
+visibleFoods += 20;
+renderFoods();
 
-meals = {
-breakfast:[],
-lunch:[],
-dinner:[],
-snack:[]
 };
 
-updateMeals();
+document
+.getElementById("search")
+.addEventListener("input",renderFoods);
 
-}
-
-function resetAll(){
-
-location.reload();
-
-}
-
-/* ================= INIT ================= */
+document
+.querySelectorAll("input,select")
+.forEach(el=>
+el.addEventListener("input",updateAI)
+);
 
 renderFoods();
+renderMeal();
+renderFavorites();
+updateAI();
 
 </script>
 
