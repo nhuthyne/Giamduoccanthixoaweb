@@ -1,9 +1,3 @@
-<!-- =========================
-🌸 NUTRITION COMMUNITY PLANNER
-Optimized Mobile Version
-Created by Bao Hy
-========================= -->
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -24,14 +18,14 @@ font-family:'Be Vietnam Pro',sans-serif;
 }
 
 body{
-background:#fffafc;
+background:#fff7fb;
 color:#374151;
 }
 
 .card{
 background:white;
 border-radius:24px;
-box-shadow:0 8px 30px rgba(236,72,153,0.08);
+box-shadow:0 10px 30px rgba(236,72,153,0.08);
 }
 
 .soft{
@@ -59,7 +53,7 @@ transform:translateY(-2px);
 }
 
 ::-webkit-scrollbar{
-width:6px;
+width:5px;
 }
 
 ::-webkit-scrollbar-thumb{
@@ -68,17 +62,19 @@ border-radius:999px;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="max-w-7xl mx-auto p-4">
 
-<!-- ================= TOP ================= -->
+<!-- ================= HEADER ================= -->
 
 <div class="grid lg:grid-cols-3 gap-4">
 
 <!-- LEFT -->
+
 <div class="lg:col-span-2 card p-4">
 
 <div class="flex justify-between items-center">
@@ -89,7 +85,7 @@ border-radius:999px;
 </h1>
 
 <p class="text-gray-400 text-sm mt-1">
-Smart Meal Planner & Calories Tracker
+Smart Calories & Meal Planner
 </p>
 </div>
 
@@ -100,8 +96,6 @@ class="text-sm text-gray-400 hover:text-pink-500">
 </button>
 
 </div>
-
-<!-- INPUT -->
 
 <div class="grid md:grid-cols-4 gap-3 mt-5">
 
@@ -122,7 +116,7 @@ class="soft border-soft rounded-2xl p-3 outline-none"
 <input
 id="goalKg"
 type="number"
-placeholder="Mục tiêu giảm"
+placeholder="Giảm bao nhiêu kg"
 class="soft border-soft rounded-2xl p-3 outline-none"
 />
 
@@ -134,14 +128,13 @@ class="pink text-white rounded-2xl font-bold">
 
 </div>
 
-<!-- STATS -->
-
 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
 
 <div class="soft rounded-2xl p-3">
 <p class="text-xs text-gray-400">
 BMI
 </p>
+
 <h2 id="bmi" class="text-2xl font-black mt-1">
 --
 </h2>
@@ -151,6 +144,7 @@ BMI
 <p class="text-xs text-gray-400">
 Mục tiêu kcal
 </p>
+
 <h2 id="targetKcal" class="text-2xl font-black mt-1">
 2000
 </h2>
@@ -160,6 +154,7 @@ Mục tiêu kcal
 <p class="text-xs text-gray-400">
 Protein
 </p>
+
 <h2 id="protein" class="text-2xl font-black mt-1">
 --
 </h2>
@@ -169,6 +164,7 @@ Protein
 <p class="text-xs text-gray-400">
 Nước
 </p>
+
 <h2 id="waterNeed" class="text-2xl font-black mt-1">
 --
 </h2>
@@ -182,8 +178,6 @@ Nước
 
 <div class="space-y-4">
 
-<!-- WATER -->
-
 <div class="card p-4">
 
 <div class="flex justify-between items-center">
@@ -192,7 +186,8 @@ Nước
 💧 Nước uống
 </h2>
 
-<span id="waterCount"
+<span
+id="waterCount"
 class="pink-text font-bold">
 0 / 2000ml
 </span>
@@ -227,15 +222,14 @@ class="soft rounded-xl py-2 pink-text font-bold">
 
 </div>
 
-<!-- AI -->
-
 <div class="card p-4">
 
 <h2 class="font-bold mb-3">
-🧠 AI Phân tích
+🧠 Phân tích thông minh
 </h2>
 
-<div id="analysis"
+<div
+id="analysis"
 class="space-y-2 text-sm">
 
 <div class="soft rounded-xl p-3">
@@ -254,7 +248,7 @@ Chưa có dữ liệu hôm nay.
 
 <div class="grid lg:grid-cols-3 gap-4 mt-4">
 
-<!-- FOODS -->
+<!-- LEFT -->
 
 <div class="lg:col-span-2 card p-4">
 
@@ -266,8 +260,9 @@ Chưa có dữ liệu hôm nay.
 </h2>
 
 <p class="text-gray-400 text-sm mt-1">
-Tạo thực đơn thông minh
+Chọn món ăn và tạo thực đơn
 </p>
+
 </div>
 
 <input
@@ -321,6 +316,12 @@ class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
 </button>
 
 <button
+onclick="filterFood(event,'Trái cây')"
+class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
+🍎 Trái cây
+</button>
+
+<button
 onclick="filterFood(event,'Tinh bột')"
 class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
 🍚 Tinh bột
@@ -332,31 +333,49 @@ class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
 🫘 Đậu
 </button>
 
+<button
+onclick="filterFood(event,'Nước uống')"
+class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
+🥤 Nước
+</button>
+
+<button
+onclick="filterFood(event,'Gia vị')"
+class="filterBtn soft px-4 py-2 rounded-full text-sm font-semibold">
+🧂 Gia vị
+</button>
+
 </div>
 
-<div id="foods"
+<!-- FOOD LIST -->
+
+<div
+id="foods"
 class="grid md:grid-cols-2 gap-4">
 </div>
 
 </div>
 
-<!-- MEALS -->
+<!-- RIGHT -->
 
 <div class="card p-4">
 
 <div class="flex justify-between items-center">
 
 <div>
+
 <h2 class="text-2xl font-extrabold">
-🍱 Hôm nay
+🍱 Thực đơn hôm nay
 </h2>
 
 <p class="text-gray-400 text-sm">
 Sáng • Trưa • Tối • Ăn vặt
 </p>
+
 </div>
 
 <div class="text-right">
+
 <p class="text-xs text-gray-400">
 Tổng hôm nay
 </p>
@@ -364,6 +383,7 @@ Tổng hôm nay
 <h2 class="text-2xl font-black pink-text">
 <span id="totalKcal">0</span> kcal
 </h2>
+
 </div>
 
 </div>
@@ -378,25 +398,26 @@ style="width:0%">
 
 </div>
 
-<!-- MEAL LIST -->
+<!-- MEALS -->
 
 <div class="space-y-4 mt-5">
 
 <div>
 
 <div class="flex justify-between mb-2">
+
 <h3 class="font-bold">
 🌅 Bữa sáng
 </h3>
 
-<span id="breakfastTotal"
-class="pink-text font-bold">
+<span id="breakfastTotal" class="pink-text font-bold">
 0 kcal
 </span>
 
 </div>
 
-<div id="breakfast"
+<div
+id="breakfast"
 class="soft rounded-2xl p-3 space-y-2">
 </div>
 
@@ -405,18 +426,19 @@ class="soft rounded-2xl p-3 space-y-2">
 <div>
 
 <div class="flex justify-between mb-2">
+
 <h3 class="font-bold">
 ☀ Bữa trưa
 </h3>
 
-<span id="lunchTotal"
-class="pink-text font-bold">
+<span id="lunchTotal" class="pink-text font-bold">
 0 kcal
 </span>
 
 </div>
 
-<div id="lunch"
+<div
+id="lunch"
 class="soft rounded-2xl p-3 space-y-2">
 </div>
 
@@ -425,18 +447,19 @@ class="soft rounded-2xl p-3 space-y-2">
 <div>
 
 <div class="flex justify-between mb-2">
+
 <h3 class="font-bold">
 🌙 Bữa tối
 </h3>
 
-<span id="dinnerTotal"
-class="pink-text font-bold">
+<span id="dinnerTotal" class="pink-text font-bold">
 0 kcal
 </span>
 
 </div>
 
-<div id="dinner"
+<div
+id="dinner"
 class="soft rounded-2xl p-3 space-y-2">
 </div>
 
@@ -445,18 +468,19 @@ class="soft rounded-2xl p-3 space-y-2">
 <div>
 
 <div class="flex justify-between mb-2">
+
 <h3 class="font-bold">
 🍪 Ăn vặt
 </h3>
 
-<span id="snackTotal"
-class="pink-text font-bold">
+<span id="snackTotal" class="pink-text font-bold">
 0 kcal
 </span>
 
 </div>
 
-<div id="snack"
+<div
+id="snack"
 class="soft rounded-2xl p-3 space-y-2">
 </div>
 
@@ -464,7 +488,7 @@ class="soft rounded-2xl p-3 space-y-2">
 
 </div>
 
-<!-- BUTTON -->
+<!-- BUTTONS -->
 
 <div class="grid grid-cols-2 gap-3 mt-5">
 
@@ -500,7 +524,7 @@ Created by Bao Hy
 
 <script>
 
-/* ================= DATA ================= */
+/* ================= FULL FOOD DATA ================= */
 
 const foods = [
 
@@ -511,36 +535,86 @@ const foods = [
 {name:"Sườn non",cal:277,cat:"Thịt",icon:"🍖"},
 {name:"Chân giò",cal:290,cat:"Thịt",icon:"🍖"},
 {name:"Da heo",cal:544,cat:"Thịt",icon:"🥓"},
+{name:"Tim heo",cal:153,cat:"Thịt",icon:"❤️"},
+{name:"Gan heo",cal:165,cat:"Thịt",icon:"🩸"},
+{name:"Óc heo",cal:143,cat:"Thịt",icon:"🧠"},
+{name:"Ruột heo",cal:168,cat:"Thịt",icon:"🥩"},
+
+{name:"Thăn bò",cal:187,cat:"Thịt",icon:"🥩"},
+{name:"Bắp bò",cal:201,cat:"Thịt",icon:"🥩"},
+{name:"Nạm bò",cal:250,cat:"Thịt",icon:"🥩"},
+{name:"Gầu bò",cal:310,cat:"Thịt",icon:"🥩"},
+{name:"Gân bò",cal:125,cat:"Thịt",icon:"🥩"},
+{name:"Tim bò",cal:112,cat:"Thịt",icon:"❤️"},
+{name:"Gan bò",cal:135,cat:"Thịt",icon:"🩸"},
+{name:"Lưỡi bò",cal:224,cat:"Thịt",icon:"🥩"},
 
 {name:"Ức gà",cal:165,cat:"Thịt",icon:"🍗"},
 {name:"Đùi gà",cal:215,cat:"Thịt",icon:"🍗"},
+{name:"Cánh gà",cal:290,cat:"Thịt",icon:"🍗"},
+{name:"Da gà",cal:450,cat:"Thịt",icon:"🍗"},
+{name:"Chân gà",cal:215,cat:"Thịt",icon:"🍗"},
+{name:"Gan gà",cal:119,cat:"Thịt",icon:"🍗"},
 {name:"Trứng gà",cal:155,cat:"Thịt",icon:"🥚"},
 
 {name:"Cá hồi",cal:208,cat:"Cá",icon:"🐟"},
 {name:"Cá basa",cal:120,cat:"Cá",icon:"🐟"},
+{name:"Cá thu",cal:205,cat:"Cá",icon:"🐟"},
+{name:"Cá ngừ",cal:132,cat:"Cá",icon:"🐟"},
+{name:"Cá rô phi",cal:128,cat:"Cá",icon:"🐟"},
 {name:"Cá lóc",cal:97,cat:"Cá",icon:"🐟"},
+{name:"Cá nục",cal:180,cat:"Cá",icon:"🐟"},
+{name:"Cá cơm",cal:210,cat:"Cá",icon:"🐟"},
+{name:"Cá trê",cal:144,cat:"Cá",icon:"🐟"},
 
 {name:"Tôm",cal:99,cat:"Hải sản",icon:"🦐"},
 {name:"Mực",cal:92,cat:"Hải sản",icon:"🦑"},
+{name:"Bạch tuộc",cal:82,cat:"Hải sản",icon:"🐙"},
 {name:"Cua",cal:97,cat:"Hải sản",icon:"🦀"},
+{name:"Ghẹ",cal:87,cat:"Hải sản",icon:"🦀"},
+{name:"Hàu",cal:68,cat:"Hải sản",icon:"🦪"},
+{name:"Sò huyết",cal:74,cat:"Hải sản",icon:"🦪"},
 
 {name:"Khoai lang",cal:86,cat:"Tinh bột",icon:"🍠"},
 {name:"Khoai tây",cal:77,cat:"Tinh bột",icon:"🥔"},
-{name:"Cơm trắng",cal:130,cat:"Tinh bột",icon:"🍚"},
-{name:"Bún",cal:110,cat:"Tinh bột",icon:"🍜"},
-{name:"Bánh mì",cal:265,cat:"Tinh bột",icon:"🍞"},
+{name:"Khoai môn",cal:112,cat:"Tinh bột",icon:"🍠"},
+{name:"Sắn",cal:160,cat:"Tinh bột",icon:"🌿"},
+{name:"Cà rốt",cal:41,cat:"Rau",icon:"🥕"},
+{name:"Củ cải trắng",cal:18,cat:"Rau",icon:"🥬"},
+{name:"Củ dền",cal:43,cat:"Rau",icon:"🥬"},
 
 {name:"Rau muống",cal:19,cat:"Rau",icon:"🥬"},
 {name:"Cải xanh",cal:27,cat:"Rau",icon:"🥬"},
 {name:"Xà lách",cal:15,cat:"Rau",icon:"🥗"},
+{name:"Cải bó xôi",cal:23,cat:"Rau",icon:"🥬"},
+{name:"Bắp cải",cal:25,cat:"Rau",icon:"🥬"},
+{name:"Dưa leo",cal:15,cat:"Rau",icon:"🥒"},
 {name:"Cà chua",cal:18,cat:"Rau",icon:"🍅"},
 
-{name:"Chuối",cal:89,cat:"Rau",icon:"🍌"},
-{name:"Táo",cal:52,cat:"Rau",icon:"🍎"},
-{name:"Cam",cal:47,cat:"Rau",icon:"🍊"},
+{name:"Chuối",cal:89,cat:"Trái cây",icon:"🍌"},
+{name:"Táo",cal:52,cat:"Trái cây",icon:"🍎"},
+{name:"Cam",cal:47,cat:"Trái cây",icon:"🍊"},
+{name:"Xoài",cal:60,cat:"Trái cây",icon:"🥭"},
+{name:"Dưa hấu",cal:30,cat:"Trái cây",icon:"🍉"},
+{name:"Bơ",cal:160,cat:"Trái cây",icon:"🥑"},
+{name:"Ổi",cal:68,cat:"Trái cây",icon:"🍏"},
+{name:"Thanh long",cal:60,cat:"Trái cây",icon:"🐉"},
+{name:"Sầu riêng",cal:147,cat:"Trái cây",icon:"🟡"},
+
+{name:"Cơm trắng",cal:130,cat:"Tinh bột",icon:"🍚"},
+{name:"Bún",cal:110,cat:"Tinh bột",icon:"🍜"},
+{name:"Phở",cal:108,cat:"Tinh bột",icon:"🍜"},
+{name:"Hủ tiếu",cal:112,cat:"Tinh bột",icon:"🍜"},
+{name:"Mì gói",cal:470,cat:"Tinh bột",icon:"🍜"},
+{name:"Yến mạch",cal:389,cat:"Tinh bột",icon:"🌾"},
+{name:"Bánh mì",cal:265,cat:"Tinh bột",icon:"🍞"},
 
 {name:"Đậu hũ",cal:76,cat:"Đậu",icon:"🧈"},
-{name:"Đậu nành",cal:173,cat:"Đậu",icon:"🫘"}
+{name:"Đậu nành",cal:173,cat:"Đậu",icon:"🫘"},
+{name:"Đậu xanh",cal:347,cat:"Đậu",icon:"🫘"},
+{name:"Đậu đỏ",cal:330,cat:"Đậu",icon:"🫘"},
+{name:"Đậu đen",cal:340,cat:"Đậu",icon:"🫘"},
+{name:"Đậu phộng",cal:567,cat:"Đậu",icon:"🥜"}
 
 ];
 
@@ -575,7 +649,7 @@ return text
 
 }
 
-/* ================= RENDER ================= */
+/* ================= RENDER FOODS ================= */
 
 function renderFoods(){
 
@@ -705,43 +779,6 @@ Xem thêm món ăn ↓
 
 }
 
-if(
-visibleFoods >= filteredFoods.length
-&& filteredFoods.length > 8
-){
-
-container.innerHTML += `
-
-<button
-onclick="collapseFoods()"
-class="col-span-full soft border-soft rounded-2xl py-3 font-bold pink-text">
-
-Thu gọn ↑
-
-</button>
-
-`;
-
-}
-
-}
-
-/* ================= SHOW MORE ================= */
-
-function showMoreFoods(){
-
-visibleFoods += 8;
-
-renderFoods();
-
-}
-
-function collapseFoods(){
-
-visibleFoods = 8;
-
-renderFoods();
-
 }
 
 /* ================= FILTER ================= */
@@ -771,7 +808,17 @@ renderFoods();
 
 }
 
-/* ================= FAVORITE ================= */
+/* ================= SHOW MORE ================= */
+
+function showMoreFoods(){
+
+visibleFoods += 8;
+
+renderFoods();
+
+}
+
+/* ================= FAVORITES ================= */
 
 function toggleFavorite(name){
 
@@ -807,13 +854,6 @@ safeId(name)
 ).value
 );
 
-if(gram<=0){
-
-alert("Gram không hợp lệ");
-return;
-
-}
-
 const mealType =
 document.getElementById(
 `meal-${safeId(name)}`
@@ -832,7 +872,7 @@ updateMeals();
 
 }
 
-/* ================= UPDATE ================= */
+/* ================= UPDATE MEALS ================= */
 
 function updateMeals(){
 
@@ -906,7 +946,7 @@ analyzeMeal();
 
 }
 
-/* ================= REMOVE ================= */
+/* ================= REMOVE FOOD ================= */
 
 function removeFood(type,index){
 
@@ -950,7 +990,7 @@ return meals[type]
 
 }
 
-/* ================= ANALYSIS ================= */
+/* ================= ANALYZE ================= */
 
 function analyzeMeal(){
 
@@ -978,21 +1018,11 @@ return;
 
 }
 
-if(total < targetKcal*0.5){
-
-html += `
-<div class="soft rounded-xl p-3">
-⚠ Bạn đang ăn khá ít calo hôm nay.
-</div>
-`;
-
-}
-
 if(total > targetKcal){
 
 html += `
 <div class="bg-red-50 text-red-500 rounded-xl p-3">
-🚨 Đã vượt mục tiêu calo hôm nay.
+🚨 Bạn đã vượt mục tiêu calo hôm nay.
 </div>
 `;
 
@@ -1009,7 +1039,7 @@ html += `
 
 html += `
 <div class="soft rounded-xl p-3">
-💡 Gợi ý: thêm rau xanh hoặc cá để cân bằng dinh dưỡng.
+💡 Gợi ý: ăn thêm rau xanh hoặc cá để cân bằng dinh dưỡng.
 </div>
 `;
 
@@ -1034,6 +1064,7 @@ document.getElementById("weight").value
 if(!height || !weight){
 
 alert("Nhập chiều cao và cân nặng");
+
 return;
 
 }
@@ -1062,8 +1093,6 @@ Math.round(weight*1.6)+"g";
 document.getElementById("waterNeed")
 .innerText =
 (weight*0.035).toFixed(1)+"L";
-
-analyzeMeal();
 
 }
 
@@ -1109,26 +1138,16 @@ snack:"🍪 ĂN VẶT"
 .forEach(type=>{
 
 text += `
-====================
-
 ${titles[type]}
 
 `;
-
-if(meals[type].length===0){
-
-text += `
-Chưa có món ăn
-`;
-
-}
 
 meals[type].forEach(item=>{
 
 text += `
 • ${item.name}
-  ${item.gram}g
-  ${item.kcal} kcal
+${item.gram}g
+${item.kcal} kcal
 
 `;
 
@@ -1149,35 +1168,11 @@ getMealTotal("breakfast")
 + getMealTotal("snack");
 
 text += `
-
-====================
-
 🔥 TỔNG:
 ${total} kcal
 
 🎯 Mục tiêu:
 ${targetKcal} kcal
-
-`;
-
-if(total > targetKcal){
-
-text += `
-⚠ Đã vượt mục tiêu hôm nay.
-`;
-
-}
-else{
-
-text += `
-✨ Bạn còn ${
-targetKcal-total
-} kcal hôm nay.
-`;
-
-}
-
-text += `
 
 Created by Bao Hy
 `;
@@ -1197,8 +1192,6 @@ a.download =
 "thuc-don.txt";
 
 a.click();
-
-URL.revokeObjectURL(a.href);
 
 }
 
